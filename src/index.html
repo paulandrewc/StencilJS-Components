@@ -17,34 +17,37 @@
   <link rel="manifest" href="/manifest.json">
 </head>
 <body>
-  <div ng-app="sdiApp" ng-controller="sdiCtrl" >
+  <div ng-app="sdiTriangleApp" ng-controller="sdiTriangleCtrl" >
   <my-app></my-app>
-  <div ng-controller="sdiCtrl"></div>
-  <sdi-triangle></sdi-triangle>
-</div>
-<div ng-controller="sdiCtrl"></div>
-  <sdi-triangle red-hex="#ff0000" blue-hex="#0000ff" green-hex="#00ff00"></sdi-triangle>
+  <div ng-controller="sdiTriangleCtrl"></div>
+  <ternary-graph></ternary-graph>
   </div>
+  <ternary-graph></ternary-graph>
   <script>
-    var app = angular.module("sdiApp", []);
-    app.controller("sdiCtrl", function($scope,$window) {
+    var app = angular.module("sdiTriangleApp", []);
+    app.controller("sdiTriangleCtrl", function($scope,$window) {
     
-    //Add data points as percentages.
-    //The Array Must Follow This Order.
+    //The Array Must Follow This Order to create a proper SDI Triangle.
     //Blue Green, Red, Name
       $scope.recordArray = 
       [
-		    {"Blue": 10, "Green": 10, "Red": 90, "Name": "Super Red"},
-		    {"Blue": 0,  "Green": 0,  "Red": 100,"Name": "Uber Red"},
-		    {"Blue": 90, "Green": 10, "Red": 10, "Name": "Super Blue"},
-		    {"Blue": 100,"Green": 0,  "Red": 0,  "Name": "Uber Blue"},
-		    {"Blue": 10, "Green": 90, "Red": 10, "Name": "Super Green"},
-		    {"Blue": 0,  "Green": 100,"Red": 0,  "Name": "Uber Green"}
+		    {"A": 10, "B": 10, "C": 90, "Label": "Super Red"},
+		    {"A": 0,  "B": 0,  "C": 100,"Label": "Uber Red"},
+		    {"A": 90, "B": 10, "C": 10, "Label": "Super Blue"},
+		    {"A": 100,"B": 0,  "C": 0,  "Label": "Uber Blue"},
+		    {"A": 10, "B": 90, "C": 10, "Label": "Super Green"},
+		    {"A": 0,  "B": 100,"C": 0,  "Label": "Uber Green"}
 	    ];
-    
+      
+      $scope.Corners = 
+      [
+        {"X":10,"Y": 10},{"X":50,"Y": 90},{"X":90,"Y":10}
+      ];
 
-      const sditriangle = document.querySelector('sdi-triangle');
-      sditriangle.recordArray = $scope.recordArray;
+      //This will currently only apply these to the first one it finds.
+      const ternarygraph = document.querySelector('ternary-graph');
+      ternarygraph.recordArray = $scope.recordArray;
+      ternarygraph.corners = $scope.Corners;
 
     });
     </script>

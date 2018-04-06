@@ -111,55 +111,55 @@ declare global {
 
 
 declare global {
-  interface HTMLSdiTriangleElement extends HTMLStencilElement {
-    'blueGreenFadeName': string;
-    'blueGreenFadeURL': string;
-    'blueGreenMixHex': string;
-    'blueGreenMixOpacity': string;
-    'blueHex': string;
+  interface HTMLTernaryGraphElement extends HTMLStencilElement {
+    'aHex': string;
+    'abFadeName': string;
+    'abFadeURL': string;
+    'abMixHex': string;
+    'abMixOpacity': string;
+    'bHex': string;
+    'cFadeEndHex': string;
+    'cFadeEndOpacity': string;
+    'cFadeName': string;
+    'cFadeURL': string;
+    'cHex': string;
     'circleRadius': number;
     'corners': Array<{"X","Y"}>;
-    'greenHex': string;
-    'plotArray': Array<{"X","Y","Name"}>;
-    'recordArray': Array<{"Blue","Green","Red","Name"}>;
-    'redFadeEndHex': string;
-    'redFadeEndOpacity': string;
-    'redFadeName': string;
-    'redFadeURL': string;
-    'redHex': string;
+    'plotArray': Array<{"X","Y","Label"}>;
+    'recordArray': Array<{"A","B","C","Label"}>;
   }
-  var HTMLSdiTriangleElement: {
-    prototype: HTMLSdiTriangleElement;
-    new (): HTMLSdiTriangleElement;
+  var HTMLTernaryGraphElement: {
+    prototype: HTMLTernaryGraphElement;
+    new (): HTMLTernaryGraphElement;
   };
   interface HTMLElementTagNameMap {
-    'sdi-triangle': HTMLSdiTriangleElement;
+    'ternary-graph': HTMLTernaryGraphElement;
   }
   interface ElementTagNameMap {
-    'sdi-triangle': HTMLSdiTriangleElement;
+    'ternary-graph': HTMLTernaryGraphElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      'sdi-triangle': JSXElements.SdiTriangleAttributes;
+      'ternary-graph': JSXElements.TernaryGraphAttributes;
     }
   }
   namespace JSXElements {
-    export interface SdiTriangleAttributes extends HTMLAttributes {
-      'blueGreenFadeName'?: string;
-      'blueGreenFadeURL'?: string;
-      'blueGreenMixHex'?: string;
-      'blueGreenMixOpacity'?: string;
-      'blueHex'?: string;
+    export interface TernaryGraphAttributes extends HTMLAttributes {
+      'aHex'?: string;
+      'abFadeName'?: string;
+      'abFadeURL'?: string;
+      'abMixHex'?: string;
+      'abMixOpacity'?: string;
+      'bHex'?: string;
+      'cFadeEndHex'?: string;
+      'cFadeEndOpacity'?: string;
+      'cFadeName'?: string;
+      'cFadeURL'?: string;
+      'cHex'?: string;
       'circleRadius'?: number;
       'corners'?: Array<{"X","Y"}>;
-      'greenHex'?: string;
-      'plotArray'?: Array<{"X","Y","Name"}>;
-      'recordArray'?: Array<{"Blue","Green","Red","Name"}>;
-      'redFadeEndHex'?: string;
-      'redFadeEndOpacity'?: string;
-      'redFadeName'?: string;
-      'redFadeURL'?: string;
-      'redHex'?: string;
+      'plotArray'?: Array<{"X","Y","Label"}>;
+      'recordArray'?: Array<{"A","B","C","Label"}>;
     }
   }
 }
