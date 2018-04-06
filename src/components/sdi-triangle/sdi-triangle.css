@@ -1,0 +1,28 @@
+	/* Colouring the background etc doesn't seem to work on an SVG */
+.plot + .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.plot + .tooltiptext::after {
+    content: "";
+    position: absolute;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+
+ .plot:hover +.tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}

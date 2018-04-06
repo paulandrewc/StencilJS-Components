@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Stencil Starter App</title>
+  <meta name="Description" content="Welcome to the Stencil App Starter. You can use this starter to build entire apps all with web components using Stencil!">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#16161d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <meta http-equiv="x-ua-compatible" content="IE=Edge"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <script src="/build/app.js"></script>
+
+  <link rel="apple-touch-icon" href="/assets/icon/icon.png">
+  <link rel="icon" type="image/x-icon" href="/assets/icon/favicon.ico">
+  <link rel="manifest" href="/manifest.json">
+</head>
+<body>
+  <div ng-app="sdiApp" ng-controller="sdiCtrl" >
+  <my-app></my-app>
+  <div ng-controller="sdiCtrl"></div>
+  <sdi-triangle [record-array]="{{$scope.recordArray}}"></sdi-triangle>
+</div>
+<div ng-controller="sdiCtrl"></div>
+  <sdi-triangle red-hex="#ff0000" blue-hex="#0000ff" green-hex="#00ff00" [record-array]="{{$scope.recordArray}}"></sdi-triangle>
+  </div>
+  <script>
+    var app = angular.module("sdiApp", []);
+    app.controller("sdiCtrl", function($scope,$window) {
+    
+    //Add data points as percentages.
+    //The Array Must Follow This Order.
+    //Blue Green, Red, Name
+      $scope.recordArray = 
+      [
+		    {"Blue": 10, "Green": 10, "Red": 90, "Name": "Super Red"},
+		    {"Blue": 0,  "Green": 0,  "Red": 100,"Name": "Uber Red"},
+		    {"Blue": 90, "Green": 10, "Red": 10, "Name": "Super Blue"},
+		    {"Blue": 100,"Green": 0,  "Red": 0,  "Name": "Uber Blue"},
+		    {"Blue": 10, "Green": 90, "Red": 10, "Name": "Super Green"},
+		    {"Blue": 0,  "Green": 100,"Red": 0,  "Name": "Uber Green"}
+	    ];
+    
+
+      const sditriangle = document.querySelector('sdi-triangle');
+      sditriangle.recordArray = $scope.recordArray;
+
+    });
+    </script>
+  <style>
+    body {
+      margin: 0px;
+      padding: 0px;
+      font-family: sans-serif;
+    }
+  </style>
+</body>
+</html>
