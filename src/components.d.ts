@@ -124,7 +124,7 @@ declare global {
     'cFadeURL': string;
     'cHex': string;
     'circleRadius': number;
-    'corners': Array<{"X","Y"}>;
+    'corners': {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}};
     'plotArray': Array<{"X","Y","Label"}>;
     'recordArray': Array<{"A","B","C","Label"}>;
   }
@@ -157,7 +157,7 @@ declare global {
       'cFadeURL'?: string;
       'cHex'?: string;
       'circleRadius'?: number;
-      'corners'?: Array<{"X","Y"}>;
+      'corners'?: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}};
       'plotArray'?: Array<{"X","Y","Label"}>;
       'recordArray'?: Array<{"A","B","C","Label"}>;
     }

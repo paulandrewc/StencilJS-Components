@@ -18,7 +18,6 @@
 </head>
 <body>
   <div ng-app="sdiTriangleApp" ng-controller="sdiTriangleCtrl" >
-  <my-app></my-app>
   <div ng-controller="sdiTriangleCtrl"></div>
   <ternary-graph></ternary-graph>
   </div>
@@ -36,13 +35,10 @@
 		    {"A": 90, "B": 10, "C": 10, "Label": "Super Blue"},
 		    {"A": 100,"B": 0,  "C": 0,  "Label": "Uber Blue"},
 		    {"A": 10, "B": 90, "C": 10, "Label": "Super Green"},
-		    {"A": 0,  "B": 100,"C": 0,  "Label": "Uber Green"}
+        {"A": 0,  "B": 100,"C": 0,  "Label": "Uber Green"}
 	    ];
       
-      $scope.Corners = 
-      [
-        {"X":10,"Y": 10},{"X":50,"Y": 90},{"X":90,"Y":10}
-      ];
+      $scope.Corners = {"A": {"X":10,"Y": 10},"B": {"X":50,"Y": 90},"C":{"X":90,"Y":10}};
 
       //This will currently only apply these to the first one it finds.
       const ternarygraph = document.querySelector('ternary-graph');
