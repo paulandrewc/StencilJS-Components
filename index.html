@@ -1,20 +1,11 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en">
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Stencil Starter App</title>
-  <meta name="Description" content="Welcome to the Stencil App Starter. You can use this starter to build entire apps all with web components using Stencil!">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
-  <meta name="theme-color" content="#16161d">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-
-  <meta http-equiv="x-ua-compatible" content="IE=Edge"/>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-  <script src="/build/app.js"></script>
-
-  <link rel="apple-touch-icon" href="/assets/icon/icon.png">
-  <link rel="icon" type="image/x-icon" href="/assets/icon/favicon.ico">
-  <link rel="manifest" href="/manifest.json">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>Demo</title>
+ <script src="../dist/stencil-components.js"></script>
 </head>
 <body>
   <div ng-app="sdiTriangleApp" ng-controller="sdiTriangleCtrl" >
@@ -30,15 +21,15 @@
     //Blue Green, Red, Name
       $scope.recordArray = 
       [
-		    {"A": 10, "B": 10, "C": 90, "Label": "Super Red"},
-		    {"A": 0,  "B": 0,  "C": 100,"Label": "Uber Red"},
-		    {"A": 90, "B": 10, "C": 10, "Label": "Super Blue"},
-		    {"A": 100,"B": 0,  "C": 0,  "Label": "Uber Blue"},
-		    {"A": 10, "B": 90, "C": 10, "Label": "Super Green"},
+		{"A": 10, "B": 10, "C": 90, "Label": "Super Red"},
+		{"A": 0,  "B": 0,  "C": 100,"Label": "Uber Red"},
+		{"A": 90, "B": 10, "C": 10, "Label": "Super Blue"},
+		{"A": 100,"B": 0,  "C": 0,  "Label": "Uber Blue"},
+		{"A": 10, "B": 90, "C": 10, "Label": "Super Green"},
         {"A": 0,  "B": 100,"C": 0,  "Label": "Uber Green"}
-	    ];
+	  ];
       
-      $scope.Corners = {"A": {"X":10,"Y": 10},"B": {"X":50,"Y": 90},"C":{"X":90,"Y":10}};
+      $scope.Corners = {"A": {"X":10,"Y": 10},"B": {"X":50,"Y": 80},"C":{"X":90,"Y":10}};
 
       //This will currently only apply these to the first one it finds.
       const ternarygraph = document.querySelector('ternary-graph');

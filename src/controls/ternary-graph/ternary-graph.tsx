@@ -23,7 +23,7 @@ export class TernaryGraph{
   @Prop({ mutable: true }) plotArray: Array<{"X","Y","Label"}> = [];
 	//Corners Order Blue Green Red.
 	//Corners in the order ABC
-	@Prop() corners: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}} = {"A":{"X":10,"Y": 90},"B": {"X":50,"Y": 10},"C": {"X":90,"Y":90}};
+	@Prop() corners: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}} = {"A":{"X":10,"Y": 80},"B": {"X":50,"Y": 10},"C": {"X":90,"Y":80}};
 	@Prop() circleRadius: number = 0.9;
 	@Prop() aHex: string = "#5579ff";  
 	@Prop() bHex: string = "#70c49c";
@@ -75,6 +75,24 @@ export class TernaryGraph{
 		return path;
 	}
 
+	abPathData()
+	{
+		var path ='M ' + this.corners.A.X + ',' +this.corners.A.Y +' L '+ this.corners.B.X + ','+ this.corners.B.Y;
+		return path;
+	}
+
+	bcPathData()
+	{
+		var path ='M ' + this.corners.B.X + ',' +this.corners.B.Y +' L '+ this.corners.C.X + ','+ this.corners.C.Y;
+		return path;
+	}
+
+	caPathData()
+	{
+		var path ='M ' + this.corners.C.X + ',' +this.corners.C.Y +' L '+ this.corners.A.X + ','+ this.corners.A.Y;
+		return path;
+	}
+
 	TernaryAlert(record){
      window.alert(record.Label);
 	};
@@ -103,7 +121,7 @@ export class TernaryGraph{
   render() {
     return (
 		<div> 
-		<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="50%" height="50%" viewBox="0 0 100 100">
+		<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="700px" height="700px" viewBox="0 0 100 100">
 		<defs>
 			<linearGradient id={this.abFadeName} gradientUnits="objectBoundingBox" x1={this.corners.A.X/100} y1={this.corners.A.Y/100} x2={this.corners.B.X/100} y2={this.corners.B.Y/100}>
 				<stop offset="0%" stop-color={this.aHex}/>
@@ -118,6 +136,13 @@ export class TernaryGraph{
 		<g>
 			<path d={this.pathData()} fill={this.abFadeURL}/>
 			<path d={this.pathData()} fill={this.cFadeURL}/>
+			<path id="abLabelPath" d={this.abPathData()}/>
+			
+			<p> test </p>
+			<use href="#abLabelPath" fill="none" stroke="red" />
+			<text font-family="Verdana"  start-offset="50%" text-anchor="start" x={(this.corners.A.X + this.corners.B.X)/2} y={(this.corners.A.Y + this.corners.B.Y)/2}  font-size="5" fill="blue" >
+    	<textPath href="#abLabelPath" >Test</textPath>
+  		</text>
 		</g>
 		{this.plotArray.map((record) => 
 			<g>

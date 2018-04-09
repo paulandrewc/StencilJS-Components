@@ -1,5 +1,4 @@
 # Stencil Components
-Test
 
 Stencil is a compiler for building fast web apps using Web Components.
 
@@ -11,42 +10,13 @@ Stencil also enables a number of key capabilities on top of Web Components, in p
 
 ## Getting Started
 
-To start a new project using Stencil, clone this repo to a new directory:
 
-```bash
-git clone https://github.com/paulandrewc/StencilJS-Components.git my-app
-cd my-app
-```
+To install with NPM do this. (once i have published to npm).
+npm install @paulandrewc/stencil-components
 
-and run:
-
-```bash
-npm install
-npm start
-```
-
-To view the build, start an HTTP server inside of the `/www` directory.
-
-To watch for file changes during development, run:
-
-```bash
-npm run dev
-```
-
-To build the app for production, run:
-
-```bash
-npm run build
-```
-
-To run the unit tests once, run:
-
-```
-npm test
-```
-
-To run the unit tests and watch for file changes during development, run:
-
-```
-npm run test.watch
-```
+npm install @paulandrewc/stencil-components
+please then include the javascript file in your website.
+It should be present under.
+node_modules/@paulandrewc/stencil-components/dist/stencil-components.js
+Then add in any dependant javascript files,
+node_modules/@paulandrewc/stencil-components/dist/stencil-components/*.js

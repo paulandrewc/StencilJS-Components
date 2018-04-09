@@ -1,7 +1,6 @@
 exports.config = {
-};
-
-exports.devServer = {
-  root: 'www',
-  watchGlob: '**/**'
+  namespace: "stencil-components",
+  generateDistribution: true,
+  generateWWW: false,
+  bundles: [{ components: ['ternary-graph'] }]
 };
