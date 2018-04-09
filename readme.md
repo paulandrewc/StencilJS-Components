@@ -1,14 +1,12 @@
 # Stencil Components
 
-Stencil is a compiler for building fast web apps using Web Components.
+These components are built using [StencilJS](https://stenciljs.com).
 
-Stencil combines the best concepts of the most popular frontend frameworks into a compile-time rather than run-time tool.  Stencil takes TypeScript, JSX, a tiny virtual DOM layer, efficient one-way data binding, an asynchronous rendering pipeline (similar to React Fiber), and lazy-loading out of the box, and generates 100% standards-based Web Components that run in any browser supporting the Custom Elements v1 spec.
+StencilJS is a compiler that generates Web Components that don't need any frameworks to run as they are just Custom Elements.
 
-Stencil components are just Web Components, so they work in any major framework or with no framework at all. In many cases, Stencil can be used as a drop in replacement for traditional frontend frameworks given the capabilities now available in the browser, though using it as such is certainly not required.
+You can see an example here in a [JSFiddle](https://jsfiddle.net/c1qf9en8/).
 
-Stencil also enables a number of key capabilities on top of Web Components, in particular Server Side Rendering (SSR) without the need to run a headless browser, pre-rendering, and objects-as-properties (instead of just strings).
-
-## Getting Started With A Test Site
+## Getting Started
 To install this to an existing web project you can use NPM.
 
 To install with NPM please use the following command 
@@ -17,8 +15,11 @@ npm install @paulandrewc/stencil-components --save
 ```
 Then include the following files in any web output:
 > node_modules/@paulandrewc/stencil-components/dist/stencil-components.js
+
 And any files in the following folder 
+
 > node_modules/@paulandrewc/stencil-components/dist/stencil-components/*.js 
+
 **NOTE:- this folder must be in the same location as the js file and have the same name.**
 
 You can now just add the stenci-component.js to your html with a script tag similar to below:
@@ -33,7 +34,7 @@ Once the Javascript is included all you need to do is add the component tag to t
 
 You should now be able to see a triangle on the page.
 
-## Getting Started With A Test Site
+## Creating A Test Site From Scratch
 To create a very simple test website follow these steps.(you will need to have node and npm installed)
 * Create a new folder to hold your project.
 * Now open powershell in this folder.
