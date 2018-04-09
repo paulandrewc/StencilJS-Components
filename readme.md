@@ -31,25 +31,6 @@ mkdir www
 new-item www\index.html
 ```
 
-* Change the index.html to be the following.
-  * The script tag points to where the copyjs task will put the javascript file.
-  * The tag "ternary-graph" will add the component to the page.
-```
-<!DOCTYPE html>
-<html lang="en">
-<head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <meta http-equiv="X-UA-Compatible" content="ie=edge">
- <title>Demo</title>
- <script src="..\js\stencil-components.js"></script>
-</head>
-<body>
- <ternary-graph></ternary-graph>
-</body>
-</html>
-```
-
 * Change the package.json to make the "scripts" object the same as below.
   * This adds a copyjs command which will copy in the javascript files from the npm package.
   * This also adds a "start" command that will run the copy and serve the website on port 5001.
@@ -71,6 +52,27 @@ new-item www\index.html
   }
 }
 ```
-**Congrats!!**
-The website should now be running on port 5001.
+
+* Change the index.html to be the following.
+  * The script tag points to where the copyjs task will put the javascript file.
+  * The tag "ternary-graph" will add the component to the page.
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>Demo</title>
+ <script src="..\js\stencil-components.js"></script>
+</head>
+<body>
+ <ternary-graph></ternary-graph>
+</body>
+</html>
+```
+
+
+**Congrats!!** The website should now be running on port 5001.
+
 Browse to localhost:5001 and you should see the ternary-graph component which is a red blue and green triangle.
