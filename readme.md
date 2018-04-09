@@ -8,8 +8,33 @@ Stencil components are just Web Components, so they work in any major framework 
 
 Stencil also enables a number of key capabilities on top of Web Components, in particular Server Side Rendering (SSR) without the need to run a headless browser, pre-rendering, and objects-as-properties (instead of just strings).
 
-## Getting Started
-To create a very simple test website follow these steps.
+## Getting Started With A Test Site
+To install this to an existing web project you can use NPM.
+
+To install with NPM please use the following command 
+```
+npm install @paulandrewc/stencil-components --save
+```
+Then include the following files in any web output:
+> node_modules/@paulandrewc/stencil-components/dist/stencil-components.js
+And any files in the following folder 
+> node_modules/@paulandrewc/stencil-components/dist/stencil-components/*.js 
+**NOTE:- this folder must be in the same location as the js file and have the same name.**
+
+You can now just add the stenci-component.js to your html with a script tag similar to below:
+```
+<script src="..\js\stencil-components.js"></script>
+```
+
+Once the Javascript is included all you need to do is add the component tag to the body and it will add the component.
+```
+<ternary-graph></ternary-graph>
+```
+
+You should now be able to see a triangle on the page.
+
+## Getting Started With A Test Site
+To create a very simple test website follow these steps.(you will need to have node and npm installed)
 * Create a new folder to hold your project.
 * Now open powershell in this folder.
 * Create default package.json
