@@ -4,7 +4,9 @@ These components are built using [StencilJS](https://stenciljs.com).
 
 StencilJS is a compiler that generates Web Components that don't need any frameworks to run as they are just Custom Elements.
 
-You can see an example here in a [JSFiddle](https://jsfiddle.net/c1qf9en8/4/).
+You can see an example here in a [JSFiddle](https://jsfiddle.net/c1qf9en8/10/).
+
+This includes a simple example of how to set properties on the component with JavaScript.
 
 ## Getting Started
 To install this to an existing web project you can use NPM.

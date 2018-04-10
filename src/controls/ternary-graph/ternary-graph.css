@@ -1,4 +1,5 @@
-	/* Colouring the background etc doesn't seem to work on an SVG */
+@import url('https://fonts.googleapis.com/css?family=Lato|Roboto');
+
 .plot + .tooltiptext {
     visibility: hidden;
     width: 120px;
@@ -10,6 +11,7 @@
     position: absolute;
     z-index: 1;
     opacity: 0;
+    font-family: 'Lato', 'Roboto';
     transition: opacity 0.3s;
 }
 
@@ -19,10 +21,15 @@
     border-width: 5px;
     border-style: solid;
     border-color: #555 transparent transparent transparent;
+    font-family: 'Lato', 'Roboto';
 }
 
 
  .plot:hover +.tooltiptext {
     visibility: visible;
     opacity: 1;
+    font-family: 'Lato', 'Roboto';
+}
+.text {
+    font-family: 'Lato', 'Roboto'
 }

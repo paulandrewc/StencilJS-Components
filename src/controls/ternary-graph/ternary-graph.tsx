@@ -8,16 +8,13 @@ import { Component, Prop, Watch} from '@stencil/core';
 export class TernaryGraph{
 	//Added lots of defaults to start with.
   @Prop() recordArray: Array<{"A","B","C","Label"}> = [
-		{"A": 40, "B": 40, "C": 20, "Label": "John Carrey"},
-		{"A": 20, "B": 30, "C": 50, "Label": "Fiona Brown"},
 		{"A": 10, "B": 10, "C": 90, "Label": "Super Red"},
 		{"A": 0,  "B": 0,  "C": 100,"Label": "Uber Red"},
 		{"A": 90, "B": 10, "C": 10, "Label": "Super Blue"},
 		{"A": 100,"B": 0,  "C": 0,  "Label": "Uber Blue"},
 		{"A": 10, "B": 90, "C": 10, "Label": "Super Green"},
 		{"A": 0,  "B": 100,"C": 0,  "Label": "Uber Green"},
-		{"A": 42, "B": 42 ,"C": 44, "Label": "James Humphrey"},
-		{"A": 10, "B": 45 ,"C": 70, "Label": "Ashley Wardell"}
+		{"A": 42, "B": 42 ,"C": 44, "Label": "Dead Central"}
 	];
 	
   @Prop({ mutable: true }) plotArray: Array<{"X","Y","Label"}> = [];
@@ -36,20 +33,68 @@ export class TernaryGraph{
 	@Prop() abMixOpacity: string = "0.7"
 	@Prop({ mutable: true }) abFadeName:string = "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"bx"+ this.corners.B.X + "by"+ this.corners.B.Y + "argb" + this.aHex.replace("#","") + "brgb" +this.bHex.replace("#","");
 	@Prop({ mutable: true }) abFadeURL:string = "url(#" + this.abFadeName +")";
+	@Prop({ mutable: true }) abTextPathName:string = "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"bx"+ this.corners.B.X + "by"+ this.corners.B.Y;
+	@Prop({ mutable: true }) bcTextPathName:string = "bx" + this.corners.B.X + "by" + this.corners.B.Y +"cx"+ this.corners.C.X + "cy"+ this.corners.C.Y;
+	@Prop({ mutable: true }) acTextPathName:string = "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"cx"+ this.corners.C.X + "ay"+ this.corners.C.Y;
+	@Prop({ mutable: true }) abTextPathHref:string = "#" + this.abTextPathName;
+	@Prop({ mutable: true }) bcTextPathHref:string = "#" + this.bcTextPathName;
+	@Prop({ mutable: true }) acTextPathHref:string = "#" + this.acTextPathName;
+	@Prop() axisLabelFontSize : number = 3;
+	@Prop() abAxisLabel :string = "A to B Axis";
+	@Prop() acAxisLabel :string = "A to C Axis";
+	@Prop() bcAxisLabel :string = "B to C Axis";
 
 	@Watch('corners')
   cornerPropWatcher() {
-    this.setGradientNames();
+		this.setGradientNames();
+		this.setTextPathNames();
   }
 	
 	@Watch('recordArray')
 	recordArrayPropWatcher(){
 		this.updatePlotArray();
+		this.checkTotalabcPoints();
+		this.checkTotalabcPoints();
 	}
 
 	componentWillLoad(){
 		this.updatePlotArray();
 		this.setGradientNames();
+		this.setTextPathNames();
+		this.checkTotalabcPoints();
+	}
+
+	setGradientNames()
+	{
+		this.cFadeName = "cx" + this.corners.C.X +"cy"+ this.corners.C.Y + "rgb" + this.cHex.replace("#","");
+		this.cFadeURL = "url(#" + this.cFadeName +")";
+		this.abFadeName =  "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"bx"+ this.corners.B.X + "by"+ this.corners.B.Y + "argb" + this.aHex.replace("#","") + "brgb" +this.bHex.replace("#","");
+		this.abFadeURL = "url(#" + this.abFadeName +")";
+	}
+
+	setTextPathNames()
+	{
+		this.abTextPathName = "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"bx"+ this.corners.B.X + "by"+ this.corners.B.Y;
+		this.bcTextPathName = "bx" + this.corners.B.X + "by" + this.corners.B.Y +"cx"+ this.corners.C.X + "cy"+ this.corners.C.Y;
+		this.acTextPathName = "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"cx"+ this.corners.C.X + "cy"+ this.corners.C.Y;
+		this.abTextPathHref = "#" + this.abTextPathName;
+		this.bcTextPathHref = "#" + this.bcTextPathName;
+		this.acTextPathHref = "#" + this.acTextPathName;
+	}
+	checkTotalabcPoints()
+	{
+		var incorrectRecords  = "";
+		for (let i = 0; i < this.recordArray.length ; i++) {
+			if (this.recordArray[i].A + this.recordArray[i].B + this.recordArray[i].C )
+			{
+					incorrectRecords += this.recordArray[i].Label + "\n";
+			}
+		};
+
+		if (incorrectRecords.length > 0)
+		{
+		 throw new Error('The following records have values that add up to more than 100 \n' + incorrectRecords);
+		}
 	}
 
 	coord(TernaryPoint: {"A","B","C","Label"}) {
@@ -76,20 +121,51 @@ export class TernaryGraph{
 	}
 
 	abPathData()
-	{
-		var path ='M ' + this.corners.A.X + ',' +this.corners.A.Y +' L '+ this.corners.B.X + ','+ this.corners.B.Y;
+	{ var ax = this.corners.A.X;
+		var ay = this.corners.A.Y;
+		var bx = this.corners.B.X;
+		var by = this.corners.B.Y;
+		
+		if(this.corners.B.Y > this.corners.A.Y)
+		{
+			ax -= this.axisLabelFontSize;
+			ay -= this.axisLabelFontSize;
+			bx -= this.axisLabelFontSize;
+			by += this.axisLabelFontSize;
+		}
+
+		var path ='M ' + ax + ',' + ay +' L '+ bx + ','+ by;
 		return path;
 	}
 
 	bcPathData()
 	{
-		var path ='M ' + this.corners.B.X + ',' +this.corners.B.Y +' L '+ this.corners.C.X + ','+ this.corners.C.Y;
+		var bx = this.corners.B.X;
+		var by = this.corners.B.Y;
+		var cx = this.corners.C.X;
+		var cy = this.corners.C.Y;
+		
+		if(this.corners.B.Y > this.corners.C.Y)
+		{
+			bx += this.axisLabelFontSize;
+			by += this.axisLabelFontSize;
+			cx += this.axisLabelFontSize;
+			cy -= this.axisLabelFontSize;
+		}
+		var path ='M ' + bx+ ',' + by+' L '+ cx + ','+ cy;
 		return path;
 	}
 
-	caPathData()
+	acPathData()
 	{
-		var path ='M ' + this.corners.C.X + ',' +this.corners.C.Y +' L '+ this.corners.A.X + ','+ this.corners.A.Y;
+		var ay = this.corners.A.Y;
+		var cy = this.corners.C.Y;
+		if ((this.corners.A.Y > this.corners.B.Y) || (this.corners.C.Y > this.corners.B.Y))
+		{
+			ay += this.axisLabelFontSize;
+			cy += this.axisLabelFontSize;
+		}
+		var path ='M ' + this.corners.A.X + ',' + ay +' L '+ this.corners.C.X + ','+ cy;
 		return path;
 	}
 
@@ -108,14 +184,6 @@ export class TernaryGraph{
 		plots.push(plotObj);
 	};
 	this.plotArray = plots;
-	}
-	
-	setGradientNames()
-	{
-		this.cFadeName = "cx" + this.corners.C.X +"cy"+ this.corners.C.Y + "rgb" + this.cHex.replace("#","");
-		this.cFadeURL = "url(#" + this.cFadeName +")";
-		this.abFadeName =  "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"bx"+ this.corners.B.X + "by"+ this.corners.B.Y + "argb" + this.aHex.replace("#","") + "brgb" +this.bHex.replace("#","");
-		this.abFadeURL = "url(#" + this.abFadeName +")";
 	}
 
   render() {
@@ -136,12 +204,17 @@ export class TernaryGraph{
 		<g>
 			<path d={this.pathData()} fill={this.abFadeURL}/>
 			<path d={this.pathData()} fill={this.cFadeURL}/>
-			<path id="abLabelPath" d={this.abPathData()}/>
-			
-			<p> test </p>
-			<use href="#abLabelPath" fill="none" stroke="red" />
-			<text font-family="Verdana"  start-offset="50%" text-anchor="start" x={(this.corners.A.X + this.corners.B.X)/2} y={(this.corners.A.Y + this.corners.B.Y)/2}  font-size="5" fill="blue" >
-    	<textPath href="#abLabelPath" >Test</textPath>
+			<path id={this.abTextPathName} d={this.abPathData()}/>
+			<path id={this.bcTextPathName}  d={this.bcPathData()}/>
+			<path id={this.acTextPathName}  d={this.acPathData()}/>
+			<text font-size={this.axisLabelFontSize} fill="blue">
+    	<textPath  startOffset="50%" text-anchor="middle" href={this.abTextPathHref} >{this.abAxisLabel}</textPath>
+  		</text>
+			<text font-size={this.axisLabelFontSize} fill="blue">
+    	<textPath  startOffset="50%" text-anchor="middle" href={this.bcTextPathHref} >{this.bcAxisLabel}</textPath>
+  		</text>
+			<text font-size={this.axisLabelFontSize} fill="blue">
+    	<textPath  startOffset="50%" text-anchor="middle" href={this.acTextPathHref} >{this.acAxisLabel}</textPath>
   		</text>
 		</g>
 		{this.plotArray.map((record) => 
@@ -149,9 +222,9 @@ export class TernaryGraph{
 				<p>{record.X}</p>
 				<p>{record.Y}</p>
 			<circle class="plot" cx={record.X} cy={record.Y} r={this.circleRadius} fill="black" onClick={this.TernaryAlert.bind(this,record)} ></circle>
-			<text class="tooltiptext" x={record.X+(this.circleRadius*1.5)} y={record.Y +this.circleRadius} fill="black" font-size="2"> {record.Label} </text>
+			<text  class="tooltiptext" x={record.X+(this.circleRadius*1.5)} y={record.Y +this.circleRadius} fill="black" font-size="2"> {record.Label} </text>
   		</g>
-      )}
+			)}
 		</svg>
 		</div>
     );

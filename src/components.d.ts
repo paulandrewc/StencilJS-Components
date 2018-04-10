@@ -27,11 +27,21 @@ declare global {
 declare global {
   interface HTMLTernaryGraphElement extends HTMLStencilElement {
     'aHex': string;
+    'abAxisLabel': string;
     'abFadeName': string;
     'abFadeURL': string;
     'abMixHex': string;
     'abMixOpacity': string;
+    'abTextPathHref': string;
+    'abTextPathName': string;
+    'acAxisLabel': string;
+    'acTextPathHref': string;
+    'acTextPathName': string;
+    'axisLabelFontSize': number;
     'bHex': string;
+    'bcAxisLabel': string;
+    'bcTextPathHref': string;
+    'bcTextPathName': string;
     'cFadeEndHex': string;
     'cFadeEndOpacity': string;
     'cFadeName': string;
@@ -60,11 +70,21 @@ declare global {
   namespace JSXElements {
     export interface TernaryGraphAttributes extends HTMLAttributes {
       'aHex'?: string;
+      'abAxisLabel'?: string;
       'abFadeName'?: string;
       'abFadeURL'?: string;
       'abMixHex'?: string;
       'abMixOpacity'?: string;
+      'abTextPathHref'?: string;
+      'abTextPathName'?: string;
+      'acAxisLabel'?: string;
+      'acTextPathHref'?: string;
+      'acTextPathName'?: string;
+      'axisLabelFontSize'?: number;
       'bHex'?: string;
+      'bcAxisLabel'?: string;
+      'bcTextPathHref'?: string;
+      'bcTextPathName'?: string;
       'cFadeEndHex'?: string;
       'cFadeEndOpacity'?: string;
       'cFadeName'?: string;
