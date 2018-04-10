@@ -1,4 +1,4 @@
-import { Component, Prop, Watch} from '@stencil/core';
+import { Component, Prop, Watch, State} from '@stencil/core';
 
 
 @Component({
@@ -43,27 +43,23 @@ export class TernaryGraph{
 	@Prop() abAxisLabel :string = "A to B Axis";
 	@Prop() acAxisLabel :string = "A to C Axis";
 	@Prop() bcAxisLabel :string = "B to C Axis";
+	@State() isDirty: boolean;
 
 	@Watch('corners')
   cornerPropWatcher() {
 		this.setGradientNames();
 		this.setTextPathNames();
+		this.isDirty = true;
   }
 	
 	@Watch('recordArray')
 	recordArrayPropWatcher(){
 		this.updatePlotArray();
 		this.checkTotalabcPoints();
+		this.isDirty = true;
 	}
 
 	componentWillLoad(){
-		this.updatePlotArray();
-		this.setGradientNames();
-		this.setTextPathNames();
-		this.checkTotalabcPoints();
-	}
-
-	componentDidLoad() {
 		this.updatePlotArray();
 		this.setGradientNames();
 		this.setTextPathNames();
