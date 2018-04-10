@@ -54,10 +54,16 @@ export class TernaryGraph{
 	recordArrayPropWatcher(){
 		this.updatePlotArray();
 		this.checkTotalabcPoints();
-		this.checkTotalabcPoints();
 	}
 
 	componentWillLoad(){
+		this.updatePlotArray();
+		this.setGradientNames();
+		this.setTextPathNames();
+		this.checkTotalabcPoints();
+	}
+
+	componentDidLoad() {
 		this.updatePlotArray();
 		this.setGradientNames();
 		this.setTextPathNames();
