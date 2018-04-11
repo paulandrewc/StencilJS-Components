@@ -25,6 +25,33 @@ declare global {
 
 
 declare global {
+  interface HTMLDashboardElementContainerElement extends HTMLStencilElement {
+    'ElementTitle': string;
+  }
+  var HTMLDashboardElementContainerElement: {
+    prototype: HTMLDashboardElementContainerElement;
+    new (): HTMLDashboardElementContainerElement;
+  };
+  interface HTMLElementTagNameMap {
+    'dashboard-element-container': HTMLDashboardElementContainerElement;
+  }
+  interface ElementTagNameMap {
+    'dashboard-element-container': HTMLDashboardElementContainerElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'dashboard-element-container': JSXElements.DashboardElementContainerAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface DashboardElementContainerAttributes extends HTMLAttributes {
+      'ElementTitle'?: string;
+    }
+  }
+}
+
+
+declare global {
   interface HTMLTernaryGraphElement extends HTMLStencilElement {
     'aHex': string;
     'abAxisLabel': string;

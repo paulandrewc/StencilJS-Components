@@ -6,7 +6,13 @@ StencilJS is a compiler that generates Web Components that don't need any framew
 
 You can see an example here in a [JSFiddle](https://jsfiddle.net/c1qf9en8/4/).
 
-You can also see an example which modifies the data and corners of the triangle with angular. Example here in [JSFiddle](https://jsfiddle.net/c1qf9en8/17/).
+You can also see an example which modifies the data and corners of the triangle with angular. Example here in [JSFiddle](https://jsfiddle.net/c1qf9en8/20/).
+
+I have also created a simple component called dashboard-element-container which is a collapsible box and added a "slot" in it.
+
+This slot allows for me to transclude other items into it, including other components.
+
+Here is an example where the two components are being used together. [JSFiddle](https://jsfiddle.net/c1qf9en8/22/).
 
 ## Getting Started
 To install this to an existing web project you can use NPM.

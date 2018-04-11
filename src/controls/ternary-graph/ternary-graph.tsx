@@ -8,13 +8,13 @@ import { Component, Prop, Watch, State} from '@stencil/core';
 export class TernaryGraph{
 	//Added lots of defaults to start with.
   @Prop() recordArray: Array<{"A","B","C","Label"}> = [
-		{"A": 10, "B": 10, "C": 90, "Label": "Super Red"},
+		{"A": 5, "B": 5, "C": 90, "Label": "Super Red"},
 		{"A": 0,  "B": 0,  "C": 100,"Label": "Uber Red"},
-		{"A": 90, "B": 10, "C": 10, "Label": "Super Blue"},
+		{"A": 90, "B": 5, "C": 5, "Label": "Super Blue"},
 		{"A": 100,"B": 0,  "C": 0,  "Label": "Uber Blue"},
-		{"A": 10, "B": 90, "C": 10, "Label": "Super Green"},
+		{"A": 5, "B": 90, "C": 5, "Label": "Super Green"},
 		{"A": 0,  "B": 100,"C": 0,  "Label": "Uber Green"},
-		{"A": 42, "B": 42 ,"C": 44, "Label": "Dead Central"}
+		{"A": 33, "B":33 ,"C": 34, "Label": "Dead Central"}
 	];
 	
   @Prop({ mutable: true }) plotArray: Array<{"X","Y","Label"}> = [];
@@ -87,15 +87,15 @@ export class TernaryGraph{
 	{
 		var incorrectRecords  = "";
 		for (let i = 0; i < this.recordArray.length ; i++) {
-			if (this.recordArray[i].A + this.recordArray[i].B + this.recordArray[i].C )
+			if ((this.recordArray[i].A + this.recordArray[i].B + this.recordArray[i].C) != 100)
 			{
 					incorrectRecords += this.recordArray[i].Label + "\n";
 			}
 		};
-
 		if (incorrectRecords.length > 0)
 		{
-		 throw new Error('The following records have values that add up to more than 100 \n' + incorrectRecords);
+			console.log('The following records have values that do not add up to 100 \n' + incorrectRecords);
+		 throw new Error('The following records have values that do not add up to 100 \n' + incorrectRecords);
 		}
 	}
 
@@ -130,10 +130,10 @@ export class TernaryGraph{
 		
 		if(this.corners.B.Y > this.corners.A.Y)
 		{
-			ax -= this.axisLabelFontSize;
-			ay -= this.axisLabelFontSize;
-			bx -= this.axisLabelFontSize;
-			by += this.axisLabelFontSize;
+			ax -= (this.axisLabelFontSize * 1.2);
+			ay -= (this.axisLabelFontSize * 1.2);
+			bx -= (this.axisLabelFontSize * 1.2);
+			by += (this.axisLabelFontSize * 1.2);
 		}
 
 		var path ='M ' + ax + ',' + ay +' L '+ bx + ','+ by;
@@ -149,10 +149,10 @@ export class TernaryGraph{
 		
 		if(this.corners.B.Y > this.corners.C.Y)
 		{
-			bx += this.axisLabelFontSize;
-			by += this.axisLabelFontSize;
-			cx += this.axisLabelFontSize;
-			cy -= this.axisLabelFontSize;
+			bx += (this.axisLabelFontSize * 1.2);
+			by += (this.axisLabelFontSize * 1.2);
+			cx += (this.axisLabelFontSize * 1.2);
+			cy -= (this.axisLabelFontSize * 1.2);
 		}
 		var path ='M ' + bx+ ',' + by+' L '+ cx + ','+ cy;
 		return path;
@@ -164,8 +164,8 @@ export class TernaryGraph{
 		var cy = this.corners.C.Y;
 		if ((this.corners.A.Y > this.corners.B.Y) || (this.corners.C.Y > this.corners.B.Y))
 		{
-			ay += this.axisLabelFontSize;
-			cy += this.axisLabelFontSize;
+			ay += (this.axisLabelFontSize * 1.2);
+			cy += (this.axisLabelFontSize * 1.2);
 		}
 		var path ='M ' + this.corners.A.X + ',' + ay +' L '+ this.corners.C.X + ','+ cy;
 		return path;
@@ -179,11 +179,14 @@ export class TernaryGraph{
 		var plots = [];
 		
 		for (let i = 0; i < this.recordArray.length ; i++) {
+			if ((this.recordArray[i].A + this.recordArray[i].B + this.recordArray[i].C) == 100)
+			{
 		var plot = this.coord(this.recordArray[i]);
 		var plotObj = {"X":plot.X,"Y":plot.Y,"Label":this.recordArray[i].Label};
 		//cannot use this spread syntax because it is an array of objects which makes it not iterable.
 		//this.plotArray = [...plots,plotObj]
 		plots.push(plotObj);
+			}
 	};
 	this.plotArray = plots;
 	}
