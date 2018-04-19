@@ -1,6 +1,6 @@
 {
-  "name": "@paulandrewc/stencil-components",
-  "version": "1.0.6",
+  "name": "@ashw1984/stencil-components",
+  "version": "1.0.0",
   "description": "Stencil Components",
   "main": "dist/stencil-components.js",
   "browser": "dist/stencil-components.js",
@@ -30,6 +30,7 @@
   },
   "homepage": "https://github.com/paulandrewc/StencilJS-Components#readme",
   "devDependencies": {
+    "@stencil/core": "0.7.7",
     "@stencil/dev-server": "latest",
     "@stencil/utils": "0.0.4",
     "serve": "^6.5.3"

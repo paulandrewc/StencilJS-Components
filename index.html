@@ -50,5 +50,17 @@
       font-family: sans-serif;
     }
   </style>
+  <div id="2">
+
+  </div>
+  <script>
+  var holidaywidget = document.createElement('holiday-widget');
+      holidaywidget.holidayRemaining = 23;
+      holidaywidget.addEventListener("requestClicked", function (e) {
+        console.log('listend to check event');
+        console.log(e);
+      });
+      document.getElementById("2").appendChild(holidaywidget);
+  </script>
 </body>
 </html>
