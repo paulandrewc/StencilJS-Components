@@ -1,6 +1,6 @@
 {
   "name": "@paulandrewc/stencil-components",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Stencil Components",
   "main": "dist/stencil-components.js",
   "browser": "dist/stencil-components.js",

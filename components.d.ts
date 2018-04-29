@@ -53,7 +53,6 @@ declare global {
 
 declare global {
   interface HTMLHolidayWidgetElement extends HTMLStencilElement {
-    'applicationName': string;
     'holidayRemaining': number;
     'totalHoliday': number;
   }
@@ -74,7 +73,6 @@ declare global {
   }
   namespace JSXElements {
     export interface HolidayWidgetAttributes extends HTMLAttributes {
-      'applicationName'?: string;
       'holidayRemaining'?: number;
       'onRequestClicked'?: (event: CustomEvent) => void;
       'totalHoliday'?: number;
