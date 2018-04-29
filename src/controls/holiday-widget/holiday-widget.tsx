@@ -8,6 +8,7 @@ import { Component, Prop, Event, EventEmitter} from '@stencil/core';
 export class HolidayWidget{
 
   @Prop({ mutable: true }) holidayRemaining: number = 0;
+  @Prop({ mutable: true }) applicationName: string = "";
   @Prop({ mutable: true }) totalHoliday: number = 0;
 
   @Event() requestClicked: EventEmitter;
@@ -35,7 +36,7 @@ export class HolidayWidget{
                         </div>
                         <div id="content"></div>
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 application-name">
-                            <span class="text-feature">Absence Management</span>
+                            <span class="text-feature">{this.applicationName}</span>
                         </div>
                     </div>
                 </div>
