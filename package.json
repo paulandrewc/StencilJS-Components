@@ -1,6 +1,6 @@
 {
   "name": "@selecthruiux/stencil-components",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Stencil Components",
   "main": "dist/stencil-components.js",
   "browser": "dist/stencil-components.js",

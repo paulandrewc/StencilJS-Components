@@ -10,11 +10,14 @@
 </head>
 <body>
   <div ng-app="sdiTriangleApp" ng-controller="sdiTriangleCtrl" >
-  <div ng-controller="sdiTriangleCtrl" style="width:500px">
-    <ternary-graph></ternary-graph>
-    <ternary-graph></ternary-graph>
+  <div ng-controller="sdiTriangleCtrl"></div>
+  <dashboard-element-container>
+  <ternary-graph></ternary-graph>
+  </dashboard-element-container>
   </div>
-  </div>
+  <dashboard-element-container>
+  <ternary-graph></ternary-graph>
+  </dashboard-element-container>
   <!-- Updating the first triangle via Angular -->
   <style>
     body {
@@ -31,7 +34,7 @@
     //Blue Green, Red, Name
       $scope.recordArray = 
       [
-		{"A": 5, "B": 5, "C": 90,"X": 10,"Y": 10,"Z": 80, "Label": "Super Red"},
+    {"A": 5, "B": 5, "C": 90,"X": 10,"Y": 10,"Z": 80, "Label": "Super Red"},
 		{"A": 0,  "B": 0,  "C": 100,"Label": "Uber Red"},
 		{"A": 90, "B": 5, "C": 5, "Label": "Super Blue"},
 		{"A": 100,"B": 0,  "C": 0,  "Label": "Uber Blue"},
