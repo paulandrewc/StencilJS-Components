@@ -7,8 +7,8 @@ import { Component, Prop, Watch, State} from '@stencil/core';
 })
 export class TernaryGraph{
 	//Added lots of defaults to start with.
-  @Prop() recordArray: Array<{"A","B","C","Label"}> = [
-		{"A": 5, "B": 5, "C": 90, "Label": "Super Red"},
+  @Prop() recordArray: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}> = [
+		{"A": 5, "B": 5, "C": 90,"X": 10,"Y": 10,"Z": 80, "Label": "Super Red"},
 		{"A": 0,  "B": 0,  "C": 100,"Label": "Uber Red"},
 		{"A": 90, "B": 5, "C": 5, "Label": "Super Blue"},
 		{"A": 100,"B": 0,  "C": 0,  "Label": "Uber Blue"},
@@ -17,16 +17,16 @@ export class TernaryGraph{
 		{"A": 33, "B":33 ,"C": 34, "Label": "Dead Central"}
 	];
 	
-  @Prop({ mutable: true }) plotArray: Array<{"X","Y","Label"}> = [];
+  @Prop({ mutable: true }) plotArray: Array<{"X","Y","X2"?,"Y2"?,"Label"}> = [];
 	//Corners Order Blue Green Red.
 	//Corners in the order ABC
 	@Prop() corners: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}} = {"A":{"X":10,"Y": 80},"B": {"X":50,"Y": 10},"C": {"X":90,"Y":80}};
 	@Prop() circleRadius: number = 0.9;
-	@Prop() aHex: string = "#5579ff";  
-	@Prop() bHex: string = "#70c49c";
-	@Prop() cHex: string = "#ff4246";
+	@Prop() aHex: string = "#4bc9f3";  
+	@Prop() bHex: string = "#71c49d";
+	@Prop() cHex: string = "#f48890";
   @Prop() cFadeEndHex: string = "#ffffff";
-	@Prop() cFadeEndOpacity: string = "0.1";
+	@Prop() cFadeEndOpacity: string = "0.2";
 	@Prop({ mutable: true }) cFadeName:string = "cx" + this.corners.C.X +"cy"+ this.corners.C.Y + "rgb" + this.cHex.replace("#","");
 	@Prop({ mutable: true }) cFadeURL:string = "url(#" + this.cFadeName +")";
   @Prop() abMixHex: string = "#008844";
@@ -83,6 +83,7 @@ export class TernaryGraph{
 		this.bcTextPathHref = "#" + this.bcTextPathName;
 		this.acTextPathHref = "#" + this.acTextPathName;
 	}
+
 	checkTotalabcPoints()
 	{
 		var incorrectRecords  = "";
@@ -99,20 +100,41 @@ export class TernaryGraph{
 		}
 	}
 
-	coord(TernaryPoint: {"A","B","C","Label"}) {
+	coord(TernaryPoint: {"A","B","C","X"?,"Y"?,"Z"?,"Label"}) {
   var a = TernaryPoint.A,
-    b = TernaryPoint.B,
-    c = TernaryPoint.C;
+    	b = TernaryPoint.B,
+			c = TernaryPoint.C,
+			x = TernaryPoint.X,
+    	y = TernaryPoint.Y,
+    	z = TernaryPoint.Z;
 	var sum;
-	var point = {"X" : 0, "Y": 0};
-  sum = a + b + c;
+	var sum2 =  undefined;
+	var point = {"X" : 0, "Y": 0, "X2":undefined,"Y2":undefined};
+	sum = a + b + c;
+	if (x !== undefined && y !== undefined && z !== undefined)
+	{
+		sum2 = x + y + z;
+	}
   if (sum !== 0) {
     a /= sum;
     b /= sum;
     c /= sum;
     point.X = (this.corners.A.X * a) + (this.corners.B.X * b ) + (this.corners.C.X * c);
-    point.Y = (this.corners.A.Y * a) + (this.corners.B.Y * b ) + (this.corners.C.Y * c);
-  }
+		point.Y = (this.corners.A.Y * a) + (this.corners.B.Y * b ) + (this.corners.C.Y * c);
+	}
+	if (sum2 !== undefined && sum2 !== 0) {
+    x /= sum2;
+    y /= sum2;
+    z /= sum2;
+    point.X2 = (this.corners.A.X * x) + (this.corners.B.X * y ) + (this.corners.C.X * z);
+		point.Y2 = (this.corners.A.Y * x) + (this.corners.B.Y * y ) + (this.corners.C.Y * z);
+	}
+	else
+	{
+		point.X2 = undefined;
+		point.Y2 = undefined;
+	}
+
   return point;
 }
 
@@ -171,6 +193,24 @@ export class TernaryGraph{
 		return path;
 	}
 
+	arrowPathData(record)
+	{
+		var x = record.X;
+		var y = record.Y;
+		var x2 = record.X2;
+		var y2 = record.Y2;
+		var path;
+		if (record.X2 !== undefined && record.X2 !== null && record.Y2 !== undefined && record.Y2 !== null)
+		{
+		path ='M ' + x + ',' +y +' L '+ x2+ ','+ y2;
+		}
+		else
+		{
+		path ='';
+		}
+		return path;
+	}
+
 	TernaryAlert(record){
      window.alert(record.Label);
 	};
@@ -182,7 +222,7 @@ export class TernaryGraph{
 			if ((this.recordArray[i].A + this.recordArray[i].B + this.recordArray[i].C) == 100)
 			{
 		var plot = this.coord(this.recordArray[i]);
-		var plotObj = {"X":plot.X,"Y":plot.Y,"Label":this.recordArray[i].Label};
+		var plotObj = {"X":plot.X,"Y":plot.Y,"X2":plot.X2,"Y2":plot.Y2,"Label":this.recordArray[i].Label};
 		//cannot use this spread syntax because it is an array of objects which makes it not iterable.
 		//this.plotArray = [...plots,plotObj]
 		plots.push(plotObj);
@@ -194,7 +234,7 @@ export class TernaryGraph{
   render() {
     return (
 		<div> 
-		<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" viewBox="0 0 100 100">
+		<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 		<defs>
 			<linearGradient id={this.abFadeName} gradientUnits="objectBoundingBox" x1={this.corners.A.X/100} y1={this.corners.A.Y/100} x2={this.corners.B.X/100} y2={this.corners.B.Y/100}>
 				<stop offset="0%" stop-color={this.aHex}/>
@@ -226,8 +266,14 @@ export class TernaryGraph{
 			<g>
 				<p>{record.X}</p>
 				<p>{record.Y}</p>
+				<p>{record.X2}</p>
+				<p>{record.Y2}</p>
 			<circle class="plot" cx={record.X} cy={record.Y} r={this.circleRadius} fill="black" onClick={this.TernaryAlert.bind(this,record)} ></circle>
 			<text  class="tooltiptext" x={record.X+(this.circleRadius*1.5)} y={record.Y +this.circleRadius} fill="black" font-size="2"> {record.Label} </text>
+				<marker id="{record.Label}" markerWidth="10" markerHeight="10" refX="0" refY="1.5" orient="auto" markerUnits="strokeWidth">
+      		<path d="M 0,0 L0,3 L3,1.5 z" />
+    		</marker>
+  			<path d={this.arrowPathData(record)} fill="none" stroke="black" stroke-width="0.7" marker-end="url(#{record.Label})"/>
   		</g>
 			)}
 		</svg>

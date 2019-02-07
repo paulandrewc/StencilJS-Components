@@ -52,38 +52,6 @@ declare global {
 
 
 declare global {
-  interface HTMLHolidayWidgetElement extends HTMLStencilElement {
-    'applicationName': string;
-    'holidayRemaining': number;
-    'totalHoliday': number;
-  }
-  var HTMLHolidayWidgetElement: {
-    prototype: HTMLHolidayWidgetElement;
-    new (): HTMLHolidayWidgetElement;
-  };
-  interface HTMLElementTagNameMap {
-    'holiday-widget': HTMLHolidayWidgetElement;
-  }
-  interface ElementTagNameMap {
-    'holiday-widget': HTMLHolidayWidgetElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'holiday-widget': JSXElements.HolidayWidgetAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface HolidayWidgetAttributes extends HTMLAttributes {
-      'applicationName'?: string;
-      'holidayRemaining'?: number;
-      'onRequestClicked'?: (event: CustomEvent) => void;
-      'totalHoliday'?: number;
-    }
-  }
-}
-
-
-declare global {
   interface HTMLTernaryGraphElement extends HTMLStencilElement {
     'aHex': string;
     'abAxisLabel': string;
@@ -108,8 +76,8 @@ declare global {
     'cHex': string;
     'circleRadius': number;
     'corners': {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}};
-    'plotArray': Array<{"X","Y","Label"}>;
-    'recordArray': Array<{"A","B","C","Label"}>;
+    'plotArray': Array<{"X","Y","X2"?,"Y2"?,"Label"}>;
+    'recordArray': Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}>;
   }
   var HTMLTernaryGraphElement: {
     prototype: HTMLTernaryGraphElement;
@@ -151,8 +119,8 @@ declare global {
       'cHex'?: string;
       'circleRadius'?: number;
       'corners'?: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}};
-      'plotArray'?: Array<{"X","Y","Label"}>;
-      'recordArray'?: Array<{"A","B","C","Label"}>;
+      'plotArray'?: Array<{"X","Y","X2"?,"Y2"?,"Label"}>;
+      'recordArray'?: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}>;
     }
   }
 }

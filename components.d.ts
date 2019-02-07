@@ -50,37 +50,6 @@ declare global {
   }
 }
 
-
-declare global {
-  interface HTMLHolidayWidgetElement extends HTMLStencilElement {
-    'holidayRemaining': number;
-    'totalHoliday': number;
-  }
-  var HTMLHolidayWidgetElement: {
-    prototype: HTMLHolidayWidgetElement;
-    new (): HTMLHolidayWidgetElement;
-  };
-  interface HTMLElementTagNameMap {
-    'holiday-widget': HTMLHolidayWidgetElement;
-  }
-  interface ElementTagNameMap {
-    'holiday-widget': HTMLHolidayWidgetElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'holiday-widget': JSXElements.HolidayWidgetAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface HolidayWidgetAttributes extends HTMLAttributes {
-      'holidayRemaining'?: number;
-      'onRequestClicked'?: (event: CustomEvent) => void;
-      'totalHoliday'?: number;
-    }
-  }
-}
-
-
 declare global {
   interface HTMLTernaryGraphElement extends HTMLStencilElement {
     'aHex': string;
