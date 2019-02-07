@@ -22,9 +22,9 @@ export class TernaryGraph{
 	//Corners in the order ABC
 	@Prop() corners: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}} = {"A":{"X":10,"Y": 80},"B": {"X":50,"Y": 10},"C": {"X":90,"Y":80}};
 	@Prop() circleRadius: number = 0.9;
-	@Prop() aHex: string = "#4bc9f3";  
-	@Prop() bHex: string = "#71c49d";
-	@Prop() cHex: string = "#f48890";
+	@Prop() aHex: string = "#5579ff";  
+	@Prop() bHex: string = "#70c49c";
+	@Prop() cHex: string = "#ff4246";
   @Prop() cFadeEndHex: string = "#ffffff";
 	@Prop() cFadeEndOpacity: string = "0.2";
 	@Prop({ mutable: true }) cFadeName:string = "cx" + this.corners.C.X +"cy"+ this.corners.C.Y + "rgb" + this.cHex.replace("#","");
