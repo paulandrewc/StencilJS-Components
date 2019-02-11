@@ -7,7 +7,8 @@ import { Component, Prop, Watch, State} from '@stencil/core';
 })
 export class TernaryGraph{
 	//Added lots of defaults to start with.
-  @Prop() recordArray: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}> = new Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}>();
+  @Prop() recordArray: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}> = [{"A": 33, "B": 34, "C": 33,"X": 10,"Y": 10,"Z": 80, "Label": "Central"},
+]
 	
   @State() plotArray: Array<{"X","Y","X2"?,"Y2"?,"Label"}> = [];
 	//Corners Order Blue Green Red.
