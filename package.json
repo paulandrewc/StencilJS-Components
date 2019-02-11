@@ -15,9 +15,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "npm run build"
   },
-  "dependencies": {
-    "@stencil/core": "0.7.7"
-  },
+  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/paulandrewc/StencilJS-Components.git"
@@ -30,7 +28,7 @@
   },
   "homepage": "https://github.com/paulandrewc/StencilJS-Components#readme",
   "devDependencies": {
-    "@stencil/core": "0.7.7",
+    "@stencil/core": "^0.17.2",
     "@stencil/dev-server": "latest",
     "@stencil/utils": "0.0.4",
     "serve": "^6.5.3"

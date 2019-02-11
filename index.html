@@ -9,15 +9,10 @@
  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 </head>
 <body>
-  <div ng-app="sdiTriangleApp" ng-controller="sdiTriangleCtrl" >
-  <div ng-controller="sdiTriangleCtrl"></div>
-  <dashboard-element-container>
-  <ternary-graph></ternary-graph>
-  </dashboard-element-container>
+  <div ng-app="sdiTriangleApp" ng-controller="sdiTriangleCtrl" style="display:block" >
+       <!-- <div id="triangleone" style="width:500px;display:inline-block"><ternary-graph></ternary-graph></div>-->
+        <div id="triangletwo" style="width:500px;display:inline-block"><ternary-graph></ternary-graph></div>
   </div>
-  <dashboard-element-container>
-  <ternary-graph></ternary-graph>
-  </dashboard-element-container>
   <!-- Updating the first triangle via Angular -->
   <style>
     body {
@@ -32,23 +27,51 @@
     
     //The Array Must Follow This Order to create a proper SDI Triangle.
     //Blue Green, Red, Name
-      $scope.recordArray = 
+      $scope.recordArray =  
       [
-    {"A": 5, "B": 5, "C": 90,"X": 10,"Y": 10,"Z": 80, "Label": "Super Red"},
-		{"A": 0,  "B": 0,  "C": 100,"Label": "Uber Red"},
-		{"A": 90, "B": 5, "C": 5, "Label": "Super Blue"},
-		{"A": 100,"B": 0,  "C": 0,  "Label": "Uber Blue"},
-		{"A": 5, "B": 90, "C": 5, "Label": "Super Green"},
+        {"A": 5, "B": 5, "C": 90,"X": 10,"Y": 10,"Z": 80, "Label": "Super Red"},
+		    {"A": 0,  "B": 0,  "C": 100,"Label": "Uber Red"},
+		    {"A": 90, "B": 5, "C": 5, "Label": "Super Blue"},
+		    {"A": 100,"B": 0,  "C": 0,  "Label": "Uber Blue"},
+		    {"A": 5, "B": 90, "C": 5, "Label": "Super Green"},
         {"A": 0,  "B": 100,"C": 0,  "Label": "Uber Green"}
-	  ];
+      ];
       
-      $scope.Corners = {"A": {"X":10,"Y": 10},"B": {"X":50,"Y": 80},"C":{"X":90,"Y":10}};
+      $scope.aHex = "#5579ff";
+      $scope.bHex = "#70c49c";
+      $scope.cHex = "#ff4246";
+      $scope.cFadeEndHex = "#ffffff";
+      $scope.cFadeEndOpacity = "0.3";
+      $scope.abMixHex = "#008844";
+      $scope.abMixOpacity = "0.6";
+      
+
+      $scope.Corners1 = {"A": {"X":10,"Y": 80},"B": {"X":50,"Y": 10},"C":{"X":90,"Y":80}};
+      $scope.Corners2 = {"A": {"X":10,"Y": 10},"B": {"X":50,"Y": 80},"C":{"X":90,"Y":10}};
 
       //This will currently only apply these to the first one it finds.
-      const ternarygraph = document.querySelector('ternary-graph');
-      ternarygraph.recordArray = $scope.recordArray;
-      ternarygraph.corners = $scope.Corners;
+      //const ternarygraph1 = document.querySelector('#triangleone ternary-graph');
+      //ternarygraph1.componentOnReady().then(() => {
+      //ternarygraph1.recordArray = $scope.recordArray;
+      //ternarygraph1.corners = $scope.Corners1;
+      //ternarygraph1.aHex = $scope.aHex;
+      //ternarygraph1.bHex = $scope.bHex;
+      //ternarygraph1.cHex = $scope.cHex;
+      //});
 
+      const ternarygraph2 = document.querySelector('#triangletwo ternary-graph');
+      ternarygraph2.componentOnReady().then(() => {
+      ternarygraph2.corners = $scope.Corners2;
+      ternarygraph2.aHex = $scope.aHex;
+      ternarygraph2.bHex = $scope.bHex;
+      ternarygraph2.cHex = $scope.cHex;
+      ternarygraph2.cFadeEndHex = $scope.cFadeEndHex;
+      ternarygraph2.cFadeEndOpacity = $scope.cFadeEndOpacity;
+      ternarygraph2.abMixHex = $scope.abMixHex;
+      ternarygraph2.abMixOpacity = $scope.abMixOpacity;
+      ternarygraph2.recordArray = $scope.recordArray;
+      
+      });
     });
     </script>
 </body>
