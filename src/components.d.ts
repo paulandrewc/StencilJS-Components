@@ -44,7 +44,9 @@ export namespace Components {
     'cHex': string;
     'circleRadius': number;
     'corners': {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}};
+    'hectagonOutlineHex': string;
     'recordArray': Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}>;
+    'showHectagon': boolean;
   }
   interface TernaryGraphAttributes extends StencilHTMLAttributes {
     'OutlineHex'?: string;
@@ -71,7 +73,9 @@ export namespace Components {
     'cHex'?: string;
     'circleRadius'?: number;
     'corners'?: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}};
+    'hectagonOutlineHex'?: string;
     'recordArray'?: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}>;
+    'showHectagon'?: boolean;
   }
 }
 

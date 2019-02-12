@@ -6,7 +6,7 @@ import { Component, Prop, Watch, State} from '@stencil/core';
 })
 export class TernaryGraph{
 	//Added lots of defaults to start with.
-  @Prop() recordArray: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}> =[{"A": 33, "B": 34, "C": 33, "Label": "Central"}];
+  @Prop() recordArray: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}> =[{"A":100/3,"B":100/3,"C":100/3,"Label":"Central"}];
 	
   @State() plotArray: Array<{"X","Y","X2"?,"Y2"?,"Label"}> = [];
 	//Corners Order Blue Green Red.
@@ -19,10 +19,12 @@ export class TernaryGraph{
   @Prop() cFadeEndHex: string = "#ffffff";
 	@Prop() cFadeEndOpacity: string = "0";
 	@Prop() OutlineHex: string = "#000000"
+	@Prop() hectagonOutlineHex: string = "#ffffff"
+	@Prop() showHectagon: boolean = false;
 	@Prop({ mutable: true }) cFadeName:string = "cx" + this.corners.C.X +"cy"+ this.corners.C.Y + "rgb" + this.cHex.replace("#","");
 	@Prop({ mutable: true }) cFadeURL:string = "url(#" + this.cFadeName +")";
   @Prop() abMixHex: string = "#ffffff";
-	@Prop() abMixOpacity: string = "0"
+	@Prop() abMixOpacity: string = "0";
 	@Prop({ mutable: true }) abFadeName:string = "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"bx"+ this.corners.B.X + "by"+ this.corners.B.Y + "argb" + this.aHex.replace("#","") + "brgb" +this.bHex.replace("#","");
 	@Prop({ mutable: true }) abFadeURL:string = "url(#" + this.abFadeName +")";
 	@Prop({ mutable: true }) abTextPathName:string = "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"bx"+ this.corners.B.X + "by"+ this.corners.B.Y;
@@ -46,7 +48,6 @@ export class TernaryGraph{
 	@Watch('abMixOpacity')
   cornerAndColourPropWatcher() {
 		this.setGradientNames();
-		this.setTextPathNames();
 		this.SetDirty();
   }
 	
@@ -62,10 +63,13 @@ export class TernaryGraph{
 	updateCorners()
 	{
 		this.updatePlots();
+		this.setTextPathNames();
 		this.SetDirty();
 	}
 
 	@Watch('plotArray')
+	@Watch('showHectagon')
+	@Watch('hectagonOutlineHex')
 	SetDirty(){
 		this.isDirty = false;
 		this.isDirty = true;
@@ -270,6 +274,35 @@ export class TernaryGraph{
 		this.SetDirty();
 	}
 
+	hectagonPoints()
+	{
+		if(!this.showHectagon)
+		{
+			console.log("hectagon")
+			console.log(this.showHectagon);
+			return "";
+		}
+		var CentralPoint = this.coord({"A":100/3,"B":100/3,"C":100/3,"Label":"CentralPoint"});
+		var radius = ((this.corners.C.X - this.corners.A.X ) * 0.1);
+		var hectagonPath = "";
+		var cx =CentralPoint.X
+    var cy = CentralPoint.Y;
+		var numerofsides = 6;
+		var centerAng = 2*Math.PI / numerofsides;
+		var startAng = Math.PI/2 - centerAng/2
+      
+	  var points = new Array();
+	  for(var i=0 ; i<numerofsides ; i++)
+			{ var ang = startAng + (i*centerAng);
+			  var x = Math.round(cx + radius*Math.cos(ang));
+			  var y = Math.round(cy - radius*Math.sin(ang)); 
+			  points.push( {"X":x , "Y":y} );
+			}
+			points.map(point => hectagonPath += point.X + "," + point.Y + " ");
+		//return hectagonPath + points[0].X + "," + points[0].Y;
+		return hectagonPath + "z";
+	}
+
   render() {
     return (
 		<div> 
@@ -277,17 +310,18 @@ export class TernaryGraph{
 		<defs>
 			<linearGradient id={this.abFadeName} gradientUnits="objectBoundingBox" x1={this.corners.A.X/100} y1={this.corners.A.Y/100} x2={this.corners.B.X/100} y2={this.corners.B.Y/100}>
 				<stop offset="0%" stop-color={this.aHex}/>
-				<stop offset="80%" stop-color={this.abMixHex} stop-opacity={this.abMixOpacity}/>
+				<stop offset="90%" stop-color={this.abMixHex} stop-opacity={this.abMixOpacity}/>
 				<stop offset="100%" stop-color={this.bHex}/>   
 			</linearGradient>
 			<linearGradient id={this.cFadeName} gradientUnits="objectBoundingBox" x1={this.corners.C.X/100} y1={this.corners.C.Y/100} x2={(this.corners.C.X/3)/100} y2={((this.corners.B.Y + this.corners.A.Y)/2)/100}>
 			<stop offset="0%" stop-color={this.cHex} />
-			<stop offset="100%" stop-color={this.cFadeEndHex} stop-opacity={this.cFadeEndOpacity} />
+			<stop offset="75%" stop-color={this.cFadeEndHex} stop-opacity={this.cFadeEndOpacity} />
 			</linearGradient>
 		</defs>
 		<g>
 			<path d={this.pathData()} fill={this.abFadeURL}/>
 			<path d={this.pathData()} fill={this.cFadeURL}/>
+			<polygon points={this.hectagonPoints()} class="polygon" stroke={this.hectagonOutlineHex} stroke-width="0.2" fill="none" />
 			<polygon points={this.outlinePathData()} class="triangle" stroke={this.OutlineHex} stroke-width="0.2" />
 			<path id={this.abTextPathName} d={this.abPathData()} />
 			<path id={this.bcTextPathName}  d={this.bcPathData()} />
