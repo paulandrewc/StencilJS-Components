@@ -276,12 +276,6 @@ export class TernaryGraph{
 
 	hectagonPoints()
 	{
-		if(!this.showHectagon)
-		{
-			console.log("hectagon")
-			console.log(this.showHectagon);
-			return "";
-		}
 		var CentralPoint = this.coord({"A":100/3,"B":100/3,"C":100/3,"Label":"CentralPoint"});
 		var radius = ((this.corners.C.X - this.corners.A.X ) * 0.1);
 		var hectagonPath = "";
