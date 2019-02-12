@@ -1,14 +1,12 @@
 import { Component, Prop, Watch, State} from '@stencil/core';
 
-
 @Component({
   tag: 'ternary-graph',
   styleUrl: 'ternary-graph.css'
 })
 export class TernaryGraph{
 	//Added lots of defaults to start with.
-  @Prop() recordArray: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}> = [{"A": 33, "B": 34, "C": 33,"X": 10,"Y": 10,"Z": 80, "Label": "Central"},
-]
+  @Prop() recordArray: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}> =[{"A": 33, "B": 34, "C": 33,"X": 10,"Y": 10,"Z": 80, "Label": "Central"}];
 	
   @State() plotArray: Array<{"X","Y","X2"?,"Y2"?,"Label"}> = [];
 	//Corners Order Blue Green Red.
@@ -53,6 +51,7 @@ export class TernaryGraph{
 	
 	@Watch('recordArray')
 	recordArrayPropWatcher(){
+		console.log("Record Array Change Detected");
 		this.updatePlotArray();
 		this.checkTotalabcPoints();
 		this.SetDirty();
@@ -61,26 +60,32 @@ export class TernaryGraph{
 	@Watch('corners')
 	updateCorners()
 	{
-		this.updatePlotArray();
-		this.checkTotalabcPoints();
+		this.updatePlots();
 		this.SetDirty();
 	}
 
 	@Watch('plotArray')
 	SetDirty(){
-		console.log("DIRTY GIRL");
 		this.isDirty = false;
 		this.isDirty = true;
 	}
 
-	componentWillLoad(){
-		if(this.recordArray.length > 0)
+	updatePlots()
+	{
+		if(this.recordArray !== null && this.recordArray !== undefined)
 		{
-		this.updatePlotArray();
+			if(this.recordArray.length > 0)
+			{
+				this.updatePlotArray();
+				this.checkTotalabcPoints();
+			}
 		}
+	}
+
+	componentWillLoad(){
 		this.setGradientNames();
 		this.setTextPathNames();
-		this.checkTotalabcPoints();
+		this.updatePlots();
 		this.SetDirty();
 	}
 
@@ -241,16 +246,10 @@ export class TernaryGraph{
 	
   updatePlotArray() {
 		var plots = [];
-
-		console.log("in updatePlotArray")
 		console.log(this.recordArray);
-
-		//console.log(this.recordArray.length);
-		//for (let i = 0; i < this.recordArray.length ; i++) {
-		//	console.log("GOT IN THE FOR LOOP");
-		//};
-
 		plots = this.recordArray.map( record => {
+			console.log("In Map");
+			console.log(record);
 			if ((record.A + record.B + record.C) == 100)
 			{
 				var plot = this.coord(record);
@@ -258,11 +257,8 @@ export class TernaryGraph{
 				return plotObj;
 			}
 		});
-		this.plotArray = plots.filter(record => record);
-		console.log("updatePlotArrayEND1")
 		console.log(plots);
-		console.log(this.plotArray);
-		console.log("updatePlotArrayEND2");
+		this.plotArray = plots.filter(record => record);
 		this.SetDirty();
 	}
 
@@ -303,7 +299,6 @@ export class TernaryGraph{
 				<p>{record.Y}</p>
 				<p>{record.X2}</p>
 				<p>{record.Y2}</p>
-				<p>{record.Label}</p>
 			<circle class="plot" cx={record.X} cy={record.Y} r={this.circleRadius} fill="black" onClick={this.TernaryAlert.bind(this,record)} ></circle>
 			<text  class="tooltiptext" x={record.X+(this.circleRadius*1.5)} y={record.Y +this.circleRadius} fill="black" font-size="2"> {record.Label} </text>
 				<marker id="{record.Label}" markerWidth="10" markerHeight="10" refX="0" refY="1.5" orient="auto" markerUnits="strokeWidth">
