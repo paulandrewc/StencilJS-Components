@@ -6,7 +6,7 @@ import { Component, Prop, Watch, State} from '@stencil/core';
 })
 export class TernaryGraph{
 	//Added lots of defaults to start with.
-  @Prop() recordArray: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}> =[{"A": 33, "B": 34, "C": 33,"X": 10,"Y": 10,"Z": 80, "Label": "Central"}];
+  @Prop() recordArray: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}> =[{"A": 33, "B": 34, "C": 33, "Label": "Central"}];
 	
   @State() plotArray: Array<{"X","Y","X2"?,"Y2"?,"Label"}> = [];
 	//Corners Order Blue Green Red.
@@ -32,9 +32,9 @@ export class TernaryGraph{
 	@Prop({ mutable: true }) bcTextPathHref:string = "#" + this.bcTextPathName;
 	@Prop({ mutable: true }) acTextPathHref:string = "#" + this.acTextPathName;
 	@Prop() axisLabelFontSize : number = 3;
-	@Prop() abAxisLabel :string = "A to B Axis";
-	@Prop() acAxisLabel :string = "A to C Axis";
-	@Prop() bcAxisLabel :string = "B to C Axis";
+	@Prop() abAxisLabel :string;
+	@Prop() acAxisLabel :string;
+	@Prop() bcAxisLabel :string;
 	@State() isDirty: boolean;
 
 	@Watch('aHex')

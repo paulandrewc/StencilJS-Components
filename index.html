@@ -10,7 +10,7 @@
 </head>
 <body>
   <div ng-app="sdiTriangleApp" ng-controller="sdiTriangleCtrl" style="display:block" >
-       <!-- <div id="triangleone" style="width:500px;display:inline-block"><ternary-graph></ternary-graph></div>-->
+       <div id="triangleone" style="width:500px;display:inline-block"><ternary-graph></ternary-graph></div>
         <div id="triangletwo" style="width:500px;display:inline-block"><ternary-graph></ternary-graph></div>
   </div>
   <!-- Updating the first triangle via Angular -->
@@ -70,6 +70,9 @@
       ternarygraph2.abMixHex = $scope.abMixHex;
       ternarygraph2.abMixOpacity = $scope.abMixOpacity;
       ternarygraph2.recordArray = $scope.recordArray;
+      ternarygraph2.abAxisLabel = "A to B Axis";
+      ternarygraph2.acAxisLabel = "A to C Axis";
+      ternarygraph2.bcAxisLabel = "B to C Axis";
       
       });
     });
