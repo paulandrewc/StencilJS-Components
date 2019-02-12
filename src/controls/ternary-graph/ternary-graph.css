@@ -33,3 +33,8 @@
 .text {
     font-family: 'Lato', 'Roboto'
 }
+
+.triangle
+{
+    fill:transparent;
+}

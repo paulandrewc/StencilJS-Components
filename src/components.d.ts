@@ -20,6 +20,7 @@ export namespace Components {
   }
 
   interface TernaryGraph {
+    'OutlineHex': string;
     'aHex': string;
     'abAxisLabel': string;
     'abFadeName': string;
@@ -46,6 +47,7 @@ export namespace Components {
     'recordArray': Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}>;
   }
   interface TernaryGraphAttributes extends StencilHTMLAttributes {
+    'OutlineHex'?: string;
     'aHex'?: string;
     'abAxisLabel'?: string;
     'abFadeName'?: string;

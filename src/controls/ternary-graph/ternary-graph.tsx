@@ -18,6 +18,7 @@ export class TernaryGraph{
 	@Prop() cHex: string = "#ffffff";
   @Prop() cFadeEndHex: string = "#ffffff";
 	@Prop() cFadeEndOpacity: string = "0";
+	@Prop() OutlineHex: string = "#000000"
 	@Prop({ mutable: true }) cFadeName:string = "cx" + this.corners.C.X +"cy"+ this.corners.C.Y + "rgb" + this.cHex.replace("#","");
 	@Prop({ mutable: true }) cFadeURL:string = "url(#" + this.cFadeName +")";
   @Prop() abMixHex: string = "#ffffff";
@@ -173,6 +174,12 @@ export class TernaryGraph{
 		return path;
 	}
 
+	outlinePathData()
+	{
+		var path = this.corners.A.X + ',' +this.corners.A.Y +' '+ this.corners.B.X + ','+ this.corners.B.Y + ' '+ this.corners.C.X + ','+this.corners.C.Y;
+		return path;
+	}
+
 	abPathData()
 	{ var ax = this.corners.A.X;
 		var ay = this.corners.A.Y;
@@ -182,9 +189,7 @@ export class TernaryGraph{
 		if(this.corners.B.Y > this.corners.A.Y)
 		{
 			ax -= (this.axisLabelFontSize * 1.2);
-			ay -= (this.axisLabelFontSize * 1.2);
 			bx -= (this.axisLabelFontSize * 1.2);
-			by += (this.axisLabelFontSize * 1.2);
 		}
 
 		var path ='M ' + ax + ',' + ay +' L '+ bx + ','+ by;
@@ -201,9 +206,7 @@ export class TernaryGraph{
 		if(this.corners.B.Y > this.corners.C.Y)
 		{
 			bx += (this.axisLabelFontSize * 1.2);
-			by += (this.axisLabelFontSize * 1.2);
 			cx += (this.axisLabelFontSize * 1.2);
-			cy -= (this.axisLabelFontSize * 1.2);
 		}
 		var path ='M ' + bx+ ',' + by+' L '+ cx + ','+ cy;
 		return path;
@@ -217,6 +220,11 @@ export class TernaryGraph{
 		{
 			ay += (this.axisLabelFontSize * 1.2);
 			cy += (this.axisLabelFontSize * 1.2);
+		}
+		else
+		{
+			ay -= (this.axisLabelFontSize * 0.3);
+			cy -= (this.axisLabelFontSize * 0.3);
 		}
 		var path ='M ' + this.corners.A.X + ',' + ay +' L '+ this.corners.C.X + ','+ cy;
 		return path;
@@ -280,9 +288,10 @@ export class TernaryGraph{
 		<g>
 			<path d={this.pathData()} fill={this.abFadeURL}/>
 			<path d={this.pathData()} fill={this.cFadeURL}/>
-			<path id={this.abTextPathName} d={this.abPathData()}/>
-			<path id={this.bcTextPathName}  d={this.bcPathData()}/>
-			<path id={this.acTextPathName}  d={this.acPathData()}/>
+			<polygon points={this.outlinePathData()} class="triangle" stroke={this.OutlineHex} stroke-width="0.2" />
+			<path id={this.abTextPathName} d={this.abPathData()} />
+			<path id={this.bcTextPathName}  d={this.bcPathData()} />
+			<path id={this.acTextPathName}  d={this.acPathData()} />
 			<text font-size={this.axisLabelFontSize} fill="blue">
     	<textPath  startOffset="50%" text-anchor="middle" href={this.abTextPathHref} >{this.abAxisLabel}</textPath>
   		</text>
