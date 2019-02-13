@@ -19,7 +19,7 @@ export class TernaryGraph{
   @Prop() cFadeEndHex: string = "#ffffff";
 	@Prop() cFadeEndOpacity: string = "0";
 	@Prop() OutlineHex: string = "#000000"
-	@Prop() hectagonOutlineHex: string = "#ffffff"
+	@Prop() hectagonHex: string = "#ffffff"
 	@Prop() showHectagon: boolean = false;
 	@Prop({ mutable: true }) cFadeName:string = "cx" + this.corners.C.X +"cy"+ this.corners.C.Y + "rgb" + this.cHex.replace("#","");
 	@Prop({ mutable: true }) cFadeURL:string = "url(#" + this.cFadeName +")";
@@ -69,7 +69,7 @@ export class TernaryGraph{
 
 	@Watch('plotArray')
 	@Watch('showHectagon')
-	@Watch('hectagonOutlineHex')
+	@Watch('hectagonHex')
 	SetDirty(){
 		this.isDirty = false;
 		this.isDirty = true;
@@ -315,7 +315,7 @@ export class TernaryGraph{
 		<g>
 			<path d={this.pathData()} fill={this.abFadeURL}/>
 			<path d={this.pathData()} fill={this.cFadeURL}/>
-			<polygon points={this.hectagonPoints()} class="polygon" stroke={this.hectagonOutlineHex} stroke-width="0.2" fill="none" />
+			<polygon points={this.hectagonPoints()} class="polygon" stroke={this.hectagonHex} stroke-width="0.2" fill={this.hectagonHex} />
 			<polygon points={this.outlinePathData()} class="triangle" stroke={this.OutlineHex} stroke-width="0.2" />
 			<path id={this.abTextPathName} d={this.abPathData()} />
 			<path id={this.bcTextPathName}  d={this.bcPathData()} />

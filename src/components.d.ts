@@ -44,7 +44,7 @@ export namespace Components {
     'cHex': string;
     'circleRadius': number;
     'corners': {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}};
-    'hectagonOutlineHex': string;
+    'hectagonHex': string;
     'recordArray': Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}>;
     'showHectagon': boolean;
   }
@@ -73,7 +73,7 @@ export namespace Components {
     'cHex'?: string;
     'circleRadius'?: number;
     'corners'?: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}};
-    'hectagonOutlineHex'?: string;
+    'hectagonHex'?: string;
     'recordArray'?: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}>;
     'showHectagon'?: boolean;
   }
