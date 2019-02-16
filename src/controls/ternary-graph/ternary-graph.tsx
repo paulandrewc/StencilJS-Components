@@ -1,4 +1,4 @@
-import { Component, Prop, Watch, State} from '@stencil/core';
+import { Component, Prop, Watch, State,Event,EventEmitter} from '@stencil/core';
 
 @Component({
   tag: 'ternary-graph',
@@ -16,17 +16,20 @@ export class TernaryGraph{
 	@Prop() aHex: string = "#ffffff";
 	@Prop() bHex: string = "#ffffff";
 	@Prop() cHex: string = "#ffffff";
-  @Prop() cFadeEndHex: string = "#ffffff";
-	@Prop() cFadeEndOpacity: string = "0";
+	@Prop() FadeEndHex: string = "#ffffff";
+	@Prop({ mutable: true }) CentralPoint: {"X","Y","X2"?,"Y2"?} = {"X":0,"Y":0};
+
+	@Prop({ mutable: true }) cFadeName:string = "cx" + this.corners.C.X +"cy"+ this.corners.C.Y + "rgb" + this.cHex.replace("#","");
+	@Prop({ mutable: true }) cFadeURL:string = "url(#" + this.cFadeName +")";
+	@Prop({ mutable: true }) bFadeName:string = "bx" + this.corners.B.X +"by"+ this.corners.B.Y + "rgb" + this.bHex.replace("#","");
+	@Prop({ mutable: true }) bFadeURL:string = "url(#" + this.bFadeName +")";
+	@Prop({ mutable: true }) aFadeName:string = "ax" + this.corners.A.X +"ay"+ this.corners.A.Y + "rgb" + this.aHex.replace("#","");
+	@Prop({ mutable: true }) aFadeURL:string = "url(#" + this.aFadeName +")";
+
 	@Prop() OutlineHex: string = "#000000"
 	@Prop() hectagonHex: string = "#ffffff"
 	@Prop() showHectagon: boolean = false;
-	@Prop({ mutable: true }) cFadeName:string = "cx" + this.corners.C.X +"cy"+ this.corners.C.Y + "rgb" + this.cHex.replace("#","");
-	@Prop({ mutable: true }) cFadeURL:string = "url(#" + this.cFadeName +")";
-  @Prop() abMixHex: string = "#ffffff";
-	@Prop() abMixOpacity: string = "0";
-	@Prop({ mutable: true }) abFadeName:string = "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"bx"+ this.corners.B.X + "by"+ this.corners.B.Y + "argb" + this.aHex.replace("#","") + "brgb" +this.bHex.replace("#","");
-	@Prop({ mutable: true }) abFadeURL:string = "url(#" + this.abFadeName +")";
+
 	@Prop({ mutable: true }) abTextPathName:string = "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"bx"+ this.corners.B.X + "by"+ this.corners.B.Y;
 	@Prop({ mutable: true }) bcTextPathName:string = "bx" + this.corners.B.X + "by" + this.corners.B.Y +"cx"+ this.corners.C.X + "cy"+ this.corners.C.Y;
 	@Prop({ mutable: true }) acTextPathName:string = "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"cx"+ this.corners.C.X + "ay"+ this.corners.C.Y;
@@ -39,13 +42,12 @@ export class TernaryGraph{
 	@Prop() bcAxisLabel :string;
 	@State() isDirty: boolean;
 
+  @Event() recordClicked: EventEmitter;	
+
 	@Watch('aHex')
 	@Watch('bHex')
 	@Watch('cHex')
-	@Watch('cFadeEndHex')
-	@Watch('cFadeEndOpacity')
-	@Watch('abMixHex')
-	@Watch('abMixOpacity')
+	@Watch('FadeEndHex')
   cornerAndColourPropWatcher() {
 		this.setGradientNames();
 		this.SetDirty();
@@ -53,7 +55,6 @@ export class TernaryGraph{
 	
 	@Watch('recordArray')
 	recordArrayPropWatcher(){
-		console.log("Record Array Change Detected");
 		this.updatePlotArray();
 		this.checkTotalabcPoints();
 		this.SetDirty();
@@ -64,6 +65,7 @@ export class TernaryGraph{
 	{
 		this.updatePlots();
 		this.setTextPathNames();
+		this.setFadeEndPoints()
 		this.SetDirty();
 	}
 
@@ -91,6 +93,7 @@ export class TernaryGraph{
 		this.setGradientNames();
 		this.setTextPathNames();
 		this.updatePlots();
+		this.setFadeEndPoints()
 		this.SetDirty();
 	}
 
@@ -100,8 +103,10 @@ export class TernaryGraph{
 		{
 			this.cFadeName = "cx" + this.corners.C.X +"cy"+ this.corners.C.Y + "rgb" + this.cHex.replace("#","");
 			this.cFadeURL = "url(#" + this.cFadeName +")";
-			this.abFadeName =  "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"bx"+ this.corners.B.X + "by"+ this.corners.B.Y + "argb" + this.aHex.replace("#","") + "brgb" +this.bHex.replace("#","");
-			this.abFadeURL = "url(#" + this.abFadeName +")";
+			this.aFadeName = "ax" + this.corners.A.X +"ay"+ this.corners.A.Y + "rgb" + this.aHex.replace("#","");
+			this.aFadeURL = "url(#" + this.aFadeName +")";
+			this.bFadeName = "bx" + this.corners.B.X +"by"+ this.corners.B.Y + "rgb" + this.cHex.replace("#","");
+			this.bFadeURL = "url(#" + this.bFadeName +")";
 		}
 	}
 
@@ -184,6 +189,11 @@ export class TernaryGraph{
 		return path;
 	}
 
+	setFadeEndPoints()
+	{
+		this.CentralPoint =  this.coord({A:100/3,B:100/3,C:100/3,"Label":"central"});
+	}
+
 	abPathData()
 	{ var ax = this.corners.A.X;
 		var ay = this.corners.A.Y;
@@ -258,10 +268,7 @@ export class TernaryGraph{
 	
   updatePlotArray() {
 		var plots = [];
-		console.log(this.recordArray);
 		plots = this.recordArray.map( record => {
-			console.log("In Map");
-			console.log(record);
 			if ((record.A + record.B + record.C) == 100)
 			{
 				var plot = this.coord(record);
@@ -269,7 +276,6 @@ export class TernaryGraph{
 				return plotObj;
 			}
 		});
-		console.log(plots);
 		this.plotArray = plots.filter(record => record);
 		this.SetDirty();
 	}
@@ -294,7 +300,7 @@ export class TernaryGraph{
 			}
 			points.map(point => hectagonPath += point.X + "," + point.Y + " ");
 		//return hectagonPath + points[0].X + "," + points[0].Y;
-		return hectagonPath + "z";
+		return hectagonPath;
 	}
 
   render() {
@@ -302,18 +308,25 @@ export class TernaryGraph{
 		<div> 
 		<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
 		<defs>
-			<linearGradient id={this.abFadeName} gradientUnits="objectBoundingBox" x1={this.corners.A.X/100} y1={this.corners.A.Y/100} x2={this.corners.B.X/100} y2={this.corners.B.Y/100}>
-				<stop offset="0%" stop-color={this.aHex}/>
-				<stop offset="90%" stop-color={this.abMixHex} stop-opacity={this.abMixOpacity}/>
-				<stop offset="100%" stop-color={this.bHex}/>   
-			</linearGradient>
-			<linearGradient id={this.cFadeName} gradientUnits="objectBoundingBox" x1={this.corners.C.X/100} y1={this.corners.C.Y/100} x2={(this.corners.C.X/3)/100} y2={((this.corners.B.Y + this.corners.A.Y)/2)/100}>
+			<linearGradient id={this.cFadeName} gradientUnits="objectBoundingBox" x1={this.corners.C.X/100} y1={this.corners.C.Y/100} x2={this.CentralPoint.X/100} y2={this.CentralPoint.Y/100}>
 			<stop offset="0%" stop-color={this.cHex} />
-			<stop offset="75%" stop-color={this.cFadeEndHex} stop-opacity={this.cFadeEndOpacity} />
+			<stop offset="90%" stop-color={this.cHex} stop-opacity="0"/>
+			<stop offset="100%" stop-color={this.FadeEndHex} stop-opacity="0"/>
+			</linearGradient>
+			<linearGradient id={this.aFadeName} gradientUnits="objectBoundingBox" x1={this.corners.A.X/100} y1={this.corners.A.Y/100} x2={this.CentralPoint.X/100} y2={this.CentralPoint.Y/100}>
+			<stop offset="0%" stop-color={this.aHex} />
+			<stop offset="90%" stop-color={this.aHex} stop-opacity="0"/>
+			<stop offset="100%" stop-color={this.FadeEndHex} stop-opacity="0"/>
+			</linearGradient>
+			<linearGradient id={this.bFadeName} gradientUnits="objectBoundingBox" x1={this.corners.B.X/100} y1={this.corners.B.Y/100} x2={this.CentralPoint.X/100} y2={this.CentralPoint.Y/100}>
+			<stop offset="0%" stop-color={this.bHex} />
+			<stop offset="90%" stop-color={this.bHex} stop-opacity="0"/>
+			<stop offset="100%" stop-color={this.FadeEndHex} stop-opacity="0"/>
 			</linearGradient>
 		</defs>
 		<g>
-			<path d={this.pathData()} fill={this.abFadeURL}/>
+			<path d={this.pathData()} fill={this.bFadeURL}/>
+			<path d={this.pathData()} fill={this.aFadeURL}/>
 			<path d={this.pathData()} fill={this.cFadeURL}/>
 			<polygon points={this.hectagonPoints()} class="polygon" stroke={this.hectagonHex} stroke-width="0.2" fill={this.hectagonHex} />
 			<polygon points={this.outlinePathData()} class="triangle" stroke={this.OutlineHex} stroke-width="0.2" />
@@ -336,8 +349,8 @@ export class TernaryGraph{
 				<p>{record.Y}</p>
 				<p>{record.X2}</p>
 				<p>{record.Y2}</p>
-			<circle class="plot" cx={record.X} cy={record.Y} r={this.circleRadius} fill="black" onClick={this.TernaryAlert.bind(this,record)} ></circle>
-			<text  class="tooltiptext" x={record.X+(this.circleRadius*1.5)} y={record.Y +this.circleRadius} fill="black" font-size="2"> {record.Label} </text>
+			<circle class="plot" cx={record.X} cy={record.Y} r={this.circleRadius} fill="black" onClick={this.recordClicked.emit(record)} ></circle>
+			<text  class="tooltiptext" text-anchor="middle" x={record.X} y={record.Y - (this.circleRadius*1.2)} fill="black" font-size="2" font-weight="bold"> {record.Label} </text>
 				<marker id="{record.Label}" markerWidth="10" markerHeight="10" refX="0" refY="1.5" orient="auto" markerUnits="strokeWidth">
       		<path d="M 0,0 L0,3 L3,1.5 z" />
     		</marker>

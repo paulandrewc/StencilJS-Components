@@ -13,6 +13,7 @@
        <div id="triangleone" style="width:500px;display:inline-block"><ternary-graph></ternary-graph></div>
         <div id="triangletwo" style="width:500px;display:inline-block"><ternary-graph></ternary-graph></div>
   </div>
+  <img src="https://totalsdi.com/wp-content/uploads/2015/05/about-triangle-image.jpg"></img>
   <!-- Updating the first triangle via Angular -->
   <style>
     body {
@@ -39,13 +40,10 @@
         {"A":100/3,"B":100/3,"C":100/3,"Label":"Central"}
       ];
       
-      $scope.aHex = "#5579ff";
-      $scope.bHex = "#70c49c";
-      $scope.cHex = "#ff4246";
-      $scope.cFadeEndHex = "#ffffff";
-      $scope.cFadeEndOpacity = "0.4";
-      $scope.abMixHex = "#008844";
-      $scope.abMixOpacity = "0.6";
+      $scope.aHex = "#51caf5";
+      $scope.bHex = "#70c59d";
+      $scope.cHex = "#f48890";
+      $scope.FadeEndHex = "#ffffff";
       $scope.showHectagon = true;
       
 
@@ -68,15 +66,14 @@
       ternarygraph2.aHex = $scope.aHex;
       ternarygraph2.bHex = $scope.bHex;
       ternarygraph2.cHex = $scope.cHex;
-      ternarygraph2.cFadeEndHex = $scope.cFadeEndHex;
-      ternarygraph2.cFadeEndOpacity = $scope.cFadeEndOpacity;
-      ternarygraph2.abMixHex = $scope.abMixHex;
-      ternarygraph2.abMixOpacity = $scope.abMixOpacity;
+      ternarygraph2.FadeEndHex = $scope.FadeEndHex;
       ternarygraph2.recordArray = $scope.recordArray;
       ternarygraph2.abAxisLabel = "A to B Axis";
       ternarygraph2.acAxisLabel = "A to C Axis";
       ternarygraph2.bcAxisLabel = "B to C Axis";
-      
+      ternarygraph2.addEventListener('recordClicked', (e) => {
+      alert("Item '" + e.Label + "' was clicked");
+      });
       });
     });
     </script>

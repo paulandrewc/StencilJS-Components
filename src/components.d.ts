@@ -20,25 +20,25 @@ export namespace Components {
   }
 
   interface TernaryGraph {
+    'CentralPoint': {"X","Y","X2"?,"Y2"?};
+    'FadeEndHex': string;
     'OutlineHex': string;
+    'aFadeName': string;
+    'aFadeURL': string;
     'aHex': string;
     'abAxisLabel': string;
-    'abFadeName': string;
-    'abFadeURL': string;
-    'abMixHex': string;
-    'abMixOpacity': string;
     'abTextPathHref': string;
     'abTextPathName': string;
     'acAxisLabel': string;
     'acTextPathHref': string;
     'acTextPathName': string;
     'axisLabelFontSize': number;
+    'bFadeName': string;
+    'bFadeURL': string;
     'bHex': string;
     'bcAxisLabel': string;
     'bcTextPathHref': string;
     'bcTextPathName': string;
-    'cFadeEndHex': string;
-    'cFadeEndOpacity': string;
     'cFadeName': string;
     'cFadeURL': string;
     'cHex': string;
@@ -49,31 +49,32 @@ export namespace Components {
     'showHectagon': boolean;
   }
   interface TernaryGraphAttributes extends StencilHTMLAttributes {
+    'CentralPoint'?: {"X","Y","X2"?,"Y2"?};
+    'FadeEndHex'?: string;
     'OutlineHex'?: string;
+    'aFadeName'?: string;
+    'aFadeURL'?: string;
     'aHex'?: string;
     'abAxisLabel'?: string;
-    'abFadeName'?: string;
-    'abFadeURL'?: string;
-    'abMixHex'?: string;
-    'abMixOpacity'?: string;
     'abTextPathHref'?: string;
     'abTextPathName'?: string;
     'acAxisLabel'?: string;
     'acTextPathHref'?: string;
     'acTextPathName'?: string;
     'axisLabelFontSize'?: number;
+    'bFadeName'?: string;
+    'bFadeURL'?: string;
     'bHex'?: string;
     'bcAxisLabel'?: string;
     'bcTextPathHref'?: string;
     'bcTextPathName'?: string;
-    'cFadeEndHex'?: string;
-    'cFadeEndOpacity'?: string;
     'cFadeName'?: string;
     'cFadeURL'?: string;
     'cHex'?: string;
     'circleRadius'?: number;
     'corners'?: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}};
     'hectagonHex'?: string;
+    'onRecordClicked'?: (event: CustomEvent) => void;
     'recordArray'?: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}>;
     'showHectagon'?: boolean;
   }
