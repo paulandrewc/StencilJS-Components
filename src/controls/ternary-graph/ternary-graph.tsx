@@ -27,8 +27,15 @@ export class TernaryGraph{
 	@Prop({ mutable: true }) aFadeURL:string = "url(#" + this.aFadeName +")";
 
 	@Prop() OutlineHex: string = "#000000"
-	@Prop() hectagonHex: string = "#ffffff"
+	@Prop() hectagonHex: string = "#000000"
 	@Prop() showHectagon: boolean = false;
+	@Prop({ mutable: true }) hectagonPath:string = "";
+	@Prop({ mutable: true }) aCornerOverlayPath = "";
+	@Prop({ mutable: true }) bCornerOverlayPath = "";
+	@Prop({ mutable: true }) cCornerOverlayPath = "";
+	@Prop({ mutable: true }) acOverlayPath = "";
+	@Prop({ mutable: true }) abOverlayPath = "";
+	@Prop({ mutable: true }) bcOverlayPath = "";
 
 	@Prop({ mutable: true }) abTextPathName:string = "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"bx"+ this.corners.B.X + "by"+ this.corners.B.Y;
 	@Prop({ mutable: true }) bcTextPathName:string = "bx" + this.corners.B.X + "by" + this.corners.B.Y +"cx"+ this.corners.C.X + "cy"+ this.corners.C.Y;
@@ -66,12 +73,16 @@ export class TernaryGraph{
 		this.updatePlots();
 		this.setTextPathNames();
 		this.setCentralPoint()
+		this.sdiOverlayPaths();
 		this.SetDirty();
 	}
 
 	@Watch('plotArray')
 	@Watch('showHectagon')
 	@Watch('hectagonHex')
+	@Watch('OutlineHex')
+	@Watch('hectagonPath')
+	@Watch('aCornerOverlayPath')
 	SetDirty(){
 		this.isDirty = false;
 		this.isDirty = true;
@@ -295,10 +306,56 @@ export class TernaryGraph{
 			{ var ang = startAng + (i*centerAng);
 			  var x = Math.round(cx + radius*Math.cos(ang));
 			  var y = Math.round(cy - radius*Math.sin(ang)); 
-			  points.push( {"X":x , "Y":y} );
+			  points.push( {"ID":i,"X":x , "Y":y} );
 			}
 			points.map(point => hectagonPath += point.X + "," + point.Y + " ");
-		return hectagonPath;
+		this.hectagonPath = hectagonPath;
+		return points;
+	}
+
+	sdiOverlayPaths()
+	{
+			var allPoints = this.hectagonPoints();
+			var StartPoint;
+			var aSecondPoint;
+			var aThirdPoint;
+			var bSecondPoint;
+			var bThirdPoint;
+			var cSecondPoint;
+			var cThirdPoint;
+			var EndPoint;
+
+			//Corner a.
+			StartPoint =  this.coord({A:(100/3)*2,B:100/3,C:0,"Label":"aStart"});
+			EndPoint =  this.coord({A:(100/3)*2,B:0,C:100/3,"Label":"aEnd"});
+			//Find Top Left Points.
+			//Lowest X
+			aSecondPoint =   allPoints.reduce((min, p) => p.X < min.X ? p : min, allPoints[0]);
+			//Second Lowest X Lowest Y
+			aThirdPoint = allPoints.filter(a => a.Y < aSecondPoint.Y).reduce((min, p) => p.X < min.X ? p : min, allPoints[0]);
+			this.aCornerOverlayPath = "M " + StartPoint.X +","  +StartPoint.Y + " L " +aSecondPoint.X + "," +aSecondPoint.Y + " " + aThirdPoint.X + ","+aThirdPoint.Y + " " + EndPoint.X + "," + EndPoint.Y;
+			
+			//Corner b
+			StartPoint =  this.coord({A:(100/3),B:(100/3)*2,C:0,"Label":"bStart"});
+			EndPoint =  this.coord({A:0,B:(100/3)*2,C:100/3,"Label":"bEnd"});
+			//Find Bottom Points.
+			//Lowest X 
+			bSecondPoint =   allPoints.reduce((max, p) => p.Y > max.Y ? p : max, allPoints[0]);
+			var BottomPoints = allPoints.filter(a => a.Y == bSecondPoint.Y);
+			bSecondPoint = 	BottomPoints.reduce((min, p) => p.X < min.X ? p : min, BottomPoints[0]);
+			//Highest X
+			bThirdPoint = 		BottomPoints.reduce((max, p) => p.X > max.X ? p : max, BottomPoints[0]);
+			this.bCornerOverlayPath = "M " + StartPoint.X +","  +StartPoint.Y + " L " +bSecondPoint.X + "," +bSecondPoint.Y + " " + bThirdPoint.X + ","+bThirdPoint.Y + " " + EndPoint.X + "," + EndPoint.Y;
+			
+			//Corner c.
+			StartPoint =  this.coord({A:0,B:100/3,C:(100/3)*2,"Label":"cEnd"});
+			EndPoint =  this.coord({A:(100/3),B:0,C:(100/3)*2,"Label":"cStart"});
+			//Find Top Right Points.
+			//Highest X
+			cSecondPoint =   allPoints.reduce((min, p) => p.X > min.X ? p : min, allPoints[0]);
+			//Second Highest X Lowest Y
+			cThirdPoint = allPoints.filter(a => a.Y < cSecondPoint.Y).reduce((max, p) => p.X > max.X ? p : max, allPoints[0]);
+			this.cCornerOverlayPath = "M " + StartPoint.X +","  +StartPoint.Y + " L " +cSecondPoint.X + "," +cSecondPoint.Y + " " + cThirdPoint.X + ","+cThirdPoint.Y + " " + EndPoint.X + "," + EndPoint.Y;
 	}
 
   render() {
@@ -308,25 +365,31 @@ export class TernaryGraph{
 		<defs>
 			<linearGradient id={this.cFadeName} gradientUnits="objectBoundingBox" x1={this.corners.C.X/100} y1={this.corners.C.Y/100} x2={this.CentralPoint.X/100} y2={this.CentralPoint.Y/100}>
 			<stop offset="0%" stop-color={this.cHex} />
-			<stop offset="90%" stop-color={this.cHex} stop-opacity="0"/>
+			<stop offset="99%" stop-color={this.cHex} stop-opacity="0"/>
 			<stop offset="100%" stop-color={this.FadeEndHex} stop-opacity="0"/>
 			</linearGradient>
 			<linearGradient id={this.aFadeName} gradientUnits="objectBoundingBox" x1={this.corners.A.X/100} y1={this.corners.A.Y/100} x2={this.CentralPoint.X/100} y2={this.CentralPoint.Y/100}>
 			<stop offset="0%" stop-color={this.aHex} />
-			<stop offset="90%" stop-color={this.aHex} stop-opacity="0"/>
+			<stop offset="99%" stop-color={this.aHex} stop-opacity="0"/>
 			<stop offset="100%" stop-color={this.FadeEndHex} stop-opacity="0"/>
 			</linearGradient>
 			<linearGradient id={this.bFadeName} gradientUnits="objectBoundingBox" x1={this.corners.B.X/100} y1={this.corners.B.Y/100} x2={this.CentralPoint.X/100} y2={this.CentralPoint.Y/100}>
 			<stop offset="0%" stop-color={this.bHex} />
-			<stop offset="90%" stop-color={this.bHex} stop-opacity="0"/>
+			<stop offset="99%" stop-color={this.bHex} stop-opacity="0"/>
 			<stop offset="100%" stop-color={this.FadeEndHex} stop-opacity="0"/>
 			</linearGradient>
 		</defs>
 		<g>
+		<path d={this.aCornerOverlayPath} stroke={this.aHex} stroke-width="0.5" fill="transparent"/>
+		<path d={this.bCornerOverlayPath} stroke={this.bHex} stroke-width="0.5" fill="transparent"/>
+		<path d={this.cCornerOverlayPath} stroke={this.cHex} stroke-width="0.5" fill="transparent"/>
+		<path d={this.acOverlayPath} stroke={this.aHex} stroke-width="0.5" fill="transparent"/>
+		<path d={this.bCornerOverlayPath} stroke={this.bHex} stroke-width="0.5" fill="transparent"/>
+		<path d={this.cCornerOverlayPath} stroke={this.cHex} stroke-width="0.5" fill="transparent"/>
+		<polygon points={this.hectagonPath} class="polygon" stroke={this.hectagonHex} stroke-width="0.2" />
 			<path d={this.pathData()} fill={this.bFadeURL}/>
 			<path d={this.pathData()} fill={this.aFadeURL}/>
 			<path d={this.pathData()} fill={this.cFadeURL}/>
-			<polygon points={this.hectagonPoints()} class="polygon" stroke={this.hectagonHex} stroke-width="0.2" fill={this.hectagonHex} />
 			<polygon points={this.outlinePathData()} class="triangle" stroke={this.OutlineHex} stroke-width="0.2" />
 			<path id={this.abTextPathName} d={this.abPathData()} />
 			<path id={this.bcTextPathName}  d={this.bcPathData()} />

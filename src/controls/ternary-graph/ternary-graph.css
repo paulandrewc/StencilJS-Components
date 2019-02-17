@@ -32,7 +32,8 @@
     font-family: 'Lato', 'Roboto'
 }
 
-.triangle
+.triangle,
+.polygon
 {
     fill:transparent;
 }
