@@ -65,7 +65,7 @@ export class TernaryGraph{
 	{
 		this.updatePlots();
 		this.setTextPathNames();
-		this.setFadeEndPoints()
+		this.setCentralPoint()
 		this.SetDirty();
 	}
 
@@ -93,7 +93,7 @@ export class TernaryGraph{
 		this.setGradientNames();
 		this.setTextPathNames();
 		this.updatePlots();
-		this.setFadeEndPoints()
+		this.setCentralPoint()
 		this.SetDirty();
 	}
 
@@ -189,7 +189,7 @@ export class TernaryGraph{
 		return path;
 	}
 
-	setFadeEndPoints()
+	setCentralPoint()
 	{
 		this.CentralPoint =  this.coord({A:100/3,B:100/3,C:100/3,"Label":"central"});
 	}
@@ -282,24 +282,22 @@ export class TernaryGraph{
 
 	hectagonPoints()
 	{
-		var CentralPoint = this.coord({"A":100/3,"B":100/3,"C":100/3,"Label":"CentralPoint"});
 		var radius = ((this.corners.C.X - this.corners.A.X ) * 0.1);
 		var hectagonPath = "";
-		var cx =CentralPoint.X
-    var cy = CentralPoint.Y;
-		var numerofsides = 6;
-		var centerAng = 2*Math.PI / numerofsides;
+		var cx =this.CentralPoint.X
+    var cy = this.CentralPoint.Y;
+		var numberofsides = 6;
+		var centerAng = 2*Math.PI / numberofsides;
 		var startAng = Math.PI/2 - centerAng/2
       
 	  var points = new Array();
-	  for(var i=0 ; i<numerofsides ; i++)
+	  for(var i=0 ; i<numberofsides ; i++)
 			{ var ang = startAng + (i*centerAng);
 			  var x = Math.round(cx + radius*Math.cos(ang));
 			  var y = Math.round(cy - radius*Math.sin(ang)); 
 			  points.push( {"X":x , "Y":y} );
 			}
 			points.map(point => hectagonPath += point.X + "," + point.Y + " ");
-		//return hectagonPath + points[0].X + "," + points[0].Y;
 		return hectagonPath;
 	}
 
