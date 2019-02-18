@@ -5,57 +5,48 @@ import { Component, Prop, Watch, State,Event,EventEmitter} from '@stencil/core';
   styleUrl: 'ternary-graph.css'
 })
 export class TernaryGraph{
-	//Added lots of defaults to start with.
-  @Prop() recordArray: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}> =[{"A":100/3,"B":100/3,"C":100/3,"Label":"Central"}];
-	
-  @State() plotArray: Array<{"X","Y","X2"?,"Y2"?,"Label"}> = [];
-	//Corners Order Blue Green Red.
-	//Corners in the order ABC
-	@Prop({ mutable: true }) corners: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}} =  {"A":{"X":10,"Y": 80},"B": {"X":50,"Y": 10},"C": {"X":90,"Y":80}};
-	@Prop() circleRadius: number = 0.9;
-	@Prop() aHex: string = "#ffffff";
-	@Prop() bHex: string = "#ffffff";
-	@Prop() cHex: string = "#ffffff";
-	@Prop() FadeEndHex: string = "#ffffff";
-	@Prop({ mutable: true }) CentralPoint: {"X","Y","X2"?,"Y2"?} = {"X":0,"Y":0};
+  @Prop() 	public	recordArray: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}> =[{"A":100/3,"B":100/3,"C":100/3,"Label":"Central"}];
+  @State()	private	plotArray: Array<{"X","Y","X2"?,"Y2"?,"Label"}> = [];
+	@Prop({ mutable: true })	public corners: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}} =  {"A":{"X":10,"Y": 80},"B": {"X":50,"Y": 10},"C": {"X":90,"Y":80}};
+	@Prop() private	circleRadius: number = 0.9;
+	@Prop() public	aHex: string = "#ffffff";
+	@Prop() public	bHex: string = "#ffffff";
+	@Prop() public	cHex: string = "#ffffff";
+	@Prop() public	FadeEndHex: string = "#ffffff";
+	@Prop({ mutable: true }) private	CentralPoint: {"X","Y","X2"?,"Y2"?} = {"X":0,"Y":0};
 
-	@Prop({ mutable: true }) cFadeName:string = "cx" + this.corners.C.X +"cy"+ this.corners.C.Y + "rgb" + this.cHex.replace("#","");
-	@Prop({ mutable: true }) cFadeURL:string = "url(#" + this.cFadeName +")";
-	@Prop({ mutable: true }) bFadeName:string = "bx" + this.corners.B.X +"by"+ this.corners.B.Y + "rgb" + this.bHex.replace("#","");
-	@Prop({ mutable: true }) bFadeURL:string = "url(#" + this.bFadeName +")";
-	@Prop({ mutable: true }) aFadeName:string = "ax" + this.corners.A.X +"ay"+ this.corners.A.Y + "rgb" + this.aHex.replace("#","");
-	@Prop({ mutable: true }) aFadeURL:string = "url(#" + this.aFadeName +")";
+	@Prop({ mutable: true }) private cFadeName:string = "cx" + this.corners.C.X +"cy"+ this.corners.C.Y + "rgb" + this.cHex.replace("#","");
+	@Prop({ mutable: true }) private cFadeURL:string = "url(#" + this.cFadeName +")";
+	@Prop({ mutable: true }) private bFadeName:string = "bx" + this.corners.B.X +"by"+ this.corners.B.Y + "rgb" + this.bHex.replace("#","");
+	@Prop({ mutable: true }) private bFadeURL:string = "url(#" + this.bFadeName +")";
+	@Prop({ mutable: true }) private aFadeName:string = "ax" + this.corners.A.X +"ay"+ this.corners.A.Y + "rgb" + this.aHex.replace("#","");
+	@Prop({ mutable: true }) private aFadeURL:string = "url(#" + this.aFadeName +")";
 
-	@Prop() OutlineHex: string = "#000000"
-	@Prop() hectagonHex: string = "#000000"
-	@Prop() showHectagon: boolean = false;
-	@Prop({ mutable: true }) hectagonPath:string = "";
-	@Prop({ mutable: true }) aCornerOverlayPath = "";
-	@Prop({ mutable: true }) bCornerOverlayPath = "";
-	@Prop({ mutable: true }) cCornerOverlayPath = "";
-	@Prop({ mutable: true }) acOverlayPath = "";
-	@Prop({ mutable: true }) abOverlayPath = "";
-	@Prop({ mutable: true }) bcOverlayPath = "";
+	@Prop() public	OutlineHex: string = "#000000"
+	@Prop() public	showSDIOverlay: boolean = false;
+	@Prop({ mutable: true }) private aCornerOverlayPath = "";
+	@Prop({ mutable: true }) private bCornerOverlayPath = "";
+	@Prop({ mutable: true }) private cCornerOverlayPath = "";
 
-	@Prop({ mutable: true }) abTextPathName:string = "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"bx"+ this.corners.B.X + "by"+ this.corners.B.Y;
-	@Prop({ mutable: true }) bcTextPathName:string = "bx" + this.corners.B.X + "by" + this.corners.B.Y +"cx"+ this.corners.C.X + "cy"+ this.corners.C.Y;
-	@Prop({ mutable: true }) acTextPathName:string = "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"cx"+ this.corners.C.X + "ay"+ this.corners.C.Y;
-	@Prop({ mutable: true }) abTextPathHref:string = "#" + this.abTextPathName;
-	@Prop({ mutable: true }) bcTextPathHref:string = "#" + this.bcTextPathName;
-	@Prop({ mutable: true }) acTextPathHref:string = "#" + this.acTextPathName;
-	@Prop() axisLabelFontSize : number = 3;
-	@Prop() abAxisLabel :string;
-	@Prop() acAxisLabel :string;
-	@Prop() bcAxisLabel :string;
-	@State() isDirty: boolean;
+	@Prop({ mutable: true }) private abTextPathName:string = "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"bx"+ this.corners.B.X + "by"+ this.corners.B.Y;
+	@Prop({ mutable: true }) private bcTextPathName:string = "bx" + this.corners.B.X + "by" + this.corners.B.Y +"cx"+ this.corners.C.X + "cy"+ this.corners.C.Y;
+	@Prop({ mutable: true }) private acTextPathName:string = "ax" + this.corners.A.X + "ay" + this.corners.A.Y +"cx"+ this.corners.C.X + "ay"+ this.corners.C.Y;
+	@Prop({ mutable: true }) private abTextPathHref:string = "#" + this.abTextPathName;
+	@Prop({ mutable: true }) private bcTextPathHref:string = "#" + this.bcTextPathName;
+	@Prop({ mutable: true }) private acTextPathHref:string = "#" + this.acTextPathName;
+	@Prop() public	axisLabelFontSize : number = 3;
+	@Prop() public	abAxisLabel :string;
+	@Prop() public	acAxisLabel :string;
+	@Prop() public	bcAxisLabel :string;
+	@State() private isDirty: boolean;
 
-  @Event() recordClicked: EventEmitter;	
+  @Event() private recordClicked: EventEmitter;	
 
 	@Watch('aHex')
 	@Watch('bHex')
 	@Watch('cHex')
 	@Watch('FadeEndHex')
-  cornerAndColourPropWatcher() {
+ 	cornerAndColourPropWatcher() {
 		this.setGradientNames();
 		this.SetDirty();
   }
@@ -77,18 +68,22 @@ export class TernaryGraph{
 		this.SetDirty();
 	}
 
+	@Watch('showSDIOverlay')
+	setSDIOverlay()
+	{
+		this.sdiOverlayPaths();
+	}
+
 	@Watch('plotArray')
-	@Watch('showHectagon')
-	@Watch('hectagonHex')
 	@Watch('OutlineHex')
-	@Watch('hectagonPath')
 	@Watch('aCornerOverlayPath')
 	SetDirty(){
+		this.isDirty = this.isDirty;
 		this.isDirty = false;
 		this.isDirty = true;
 	}
 
-	updatePlots()
+	private updatePlots()
 	{
 		if(this.recordArray !== null && this.recordArray !== undefined)
 		{
@@ -108,7 +103,7 @@ export class TernaryGraph{
 		this.SetDirty();
 	}
 
-	setGradientNames()
+	private setGradientNames()
 	{ 
 		if (this.corners !== null && this.corners !== undefined)
 		{
@@ -121,7 +116,13 @@ export class TernaryGraph{
 		}
 	}
 
-	setTextPathNames()
+	private HandleClick(record,event)
+	{
+		this.recordClicked.emit(record);
+		console.log(event);
+	}
+
+	private setTextPathNames()
 	{
 		if (this.corners !== null && this.corners !== undefined)
 		{
@@ -134,7 +135,7 @@ export class TernaryGraph{
 		}
 	}
 
-	checkTotalabcPoints()
+	private checkTotalabcPoints()
 	{
 		var incorrectRecords  = "";
 		for (let i = 0; i < this.recordArray.length ; i++) {
@@ -150,7 +151,7 @@ export class TernaryGraph{
 		}
 	}
 
-	coord(TernaryPoint: {"A","B","C","X"?,"Y"?,"Z"?,"Label"}) {
+	private coord(TernaryPoint: {"A","B","C","X"?,"Y"?,"Z"?,"Label"}) {
   var a = TernaryPoint.A,
     	b = TernaryPoint.B,
 			c = TernaryPoint.C,
@@ -188,24 +189,24 @@ export class TernaryGraph{
   return point;
 }
 
-	pathData()
+	private pathData()
 	{
 		var path ='M ' + this.corners.A.X + ',' +this.corners.A.Y +' L '+ this.corners.B.X + ','+ this.corners.B.Y + ' '+ this.corners.C.X + ','+this.corners.C.Y+  ' Z';
 		return path;
 	}
 
-	outlinePathData()
+	private outlinePathData()
 	{
 		var path = this.corners.A.X + ',' +this.corners.A.Y +' '+ this.corners.B.X + ','+ this.corners.B.Y + ' '+ this.corners.C.X + ','+this.corners.C.Y;
 		return path;
 	}
 
-	setCentralPoint()
+	private setCentralPoint()
 	{
 		this.CentralPoint =  this.coord({A:100/3,B:100/3,C:100/3,"Label":"central"});
 	}
 
-	abPathData()
+	private abPathData()
 	{ var ax = this.corners.A.X;
 		var ay = this.corners.A.Y;
 		var bx = this.corners.B.X;
@@ -221,7 +222,7 @@ export class TernaryGraph{
 		return path;
 	}
 
-	bcPathData()
+	private bcPathData()
 	{
 		var bx = this.corners.B.X;
 		var by = this.corners.B.Y;
@@ -237,7 +238,7 @@ export class TernaryGraph{
 		return path;
 	}
 
-	acPathData()
+	private acPathData()
 	{
 		var ay = this.corners.A.Y;
 		var cy = this.corners.C.Y;
@@ -255,7 +256,7 @@ export class TernaryGraph{
 		return path;
 	}
 
-	arrowPathData(record)
+	private arrowPathData(record)
 	{
 		var x = record.X;
 		var y = record.Y;
@@ -272,12 +273,8 @@ export class TernaryGraph{
 		}
 		return path;
 	}
-
-	TernaryAlert(record){
-     window.alert(record.Label);
-	};
 	
-  updatePlotArray() {
+  private updatePlotArray() {
 		var plots = [];
 		plots = this.recordArray.map( record => {
 			if ((record.A + record.B + record.C) == 100)
@@ -291,10 +288,9 @@ export class TernaryGraph{
 		this.SetDirty();
 	}
 
-	hectagonPoints()
+	private hectagonPoints()
 	{
 		var radius = ((this.corners.C.X - this.corners.A.X ) * 0.1);
-		var hectagonPath = "";
 		var cx =this.CentralPoint.X
     var cy = this.CentralPoint.Y;
 		var numberofsides = 6;
@@ -308,36 +304,46 @@ export class TernaryGraph{
 			  var y = Math.round(cy - radius*Math.sin(ang)); 
 			  points.push( {"ID":i,"X":x , "Y":y} );
 			}
-			points.map(point => hectagonPath += point.X + "," + point.Y + " ");
-		this.hectagonPath = hectagonPath;
 		return points;
 	}
 
-	sdiOverlayPaths()
+	private sdiOverlayPaths()
 	{
+		if(this.showSDIOverlay)
+		{
 			var allPoints = this.hectagonPoints();
-			var StartPoint;
+			var abMinorPoint; //A Second Pointer to B Second Pointer.
+			var acMinorPoint //A Third Pointer to C Third Pointer.
+			var bcMinorPoint //B Third Pointer to C Second Pointer.
+
+			var aStartPoint;
+			var aEndPoint;
 			var aSecondPoint;
 			var aThirdPoint;
+
+			var bStartPoint;
+			var bEndPoint;
 			var bSecondPoint;
 			var bThirdPoint;
+
+			var cStartPoint;
+			var cEndPoint;
 			var cSecondPoint;
 			var cThirdPoint;
-			var EndPoint;
 
 			//Corner a.
-			StartPoint =  this.coord({A:(100/3)*2,B:100/3,C:0,"Label":"aStart"});
-			EndPoint =  this.coord({A:(100/3)*2,B:0,C:100/3,"Label":"aEnd"});
+			aStartPoint =  this.coord({A:(100/3)*2,B:100/3,C:0,"Label":"aStart"});
+			aEndPoint =  this.coord({A:(100/3)*2,B:0,C:100/3,"Label":"aEnd"});
 			//Find Top Left Points.
 			//Lowest X
 			aSecondPoint =   allPoints.reduce((min, p) => p.X < min.X ? p : min, allPoints[0]);
 			//Second Lowest X Lowest Y
 			aThirdPoint = allPoints.filter(a => a.Y < aSecondPoint.Y).reduce((min, p) => p.X < min.X ? p : min, allPoints[0]);
-			this.aCornerOverlayPath = "M " + StartPoint.X +","  +StartPoint.Y + " L " +aSecondPoint.X + "," +aSecondPoint.Y + " " + aThirdPoint.X + ","+aThirdPoint.Y + " " + EndPoint.X + "," + EndPoint.Y;
+			
 			
 			//Corner b
-			StartPoint =  this.coord({A:(100/3),B:(100/3)*2,C:0,"Label":"bStart"});
-			EndPoint =  this.coord({A:0,B:(100/3)*2,C:100/3,"Label":"bEnd"});
+			bStartPoint =  this.coord({A:(100/3),B:(100/3)*2,C:0,"Label":"bStart"});
+			bEndPoint =  this.coord({A:0,B:(100/3)*2,C:100/3,"Label":"bEnd"});
 			//Find Bottom Points.
 			//Lowest X 
 			bSecondPoint =   allPoints.reduce((max, p) => p.Y > max.Y ? p : max, allPoints[0]);
@@ -345,17 +351,55 @@ export class TernaryGraph{
 			bSecondPoint = 	BottomPoints.reduce((min, p) => p.X < min.X ? p : min, BottomPoints[0]);
 			//Highest X
 			bThirdPoint = 		BottomPoints.reduce((max, p) => p.X > max.X ? p : max, BottomPoints[0]);
-			this.bCornerOverlayPath = "M " + StartPoint.X +","  +StartPoint.Y + " L " +bSecondPoint.X + "," +bSecondPoint.Y + " " + bThirdPoint.X + ","+bThirdPoint.Y + " " + EndPoint.X + "," + EndPoint.Y;
+
 			
 			//Corner c.
-			StartPoint =  this.coord({A:0,B:100/3,C:(100/3)*2,"Label":"cEnd"});
-			EndPoint =  this.coord({A:(100/3),B:0,C:(100/3)*2,"Label":"cStart"});
+			cStartPoint =  this.coord({A:0,B:100/3,C:(100/3)*2,"Label":"cEnd"});
+			cEndPoint =  this.coord({A:(100/3),B:0,C:(100/3)*2,"Label":"cStart"});
 			//Find Top Right Points.
 			//Highest X
 			cSecondPoint =   allPoints.reduce((min, p) => p.X > min.X ? p : min, allPoints[0]);
 			//Second Highest X Lowest Y
 			cThirdPoint = allPoints.filter(a => a.Y < cSecondPoint.Y).reduce((max, p) => p.X > max.X ? p : max, allPoints[0]);
-			this.cCornerOverlayPath = "M " + StartPoint.X +","  +StartPoint.Y + " L " +cSecondPoint.X + "," +cSecondPoint.Y + " " + cThirdPoint.X + ","+cThirdPoint.Y + " " + EndPoint.X + "," + EndPoint.Y;
+
+			//Set Minor Points
+			abMinorPoint = {"X":(aSecondPoint.X	+ bSecondPoint.X)	/2,	"Y":(aSecondPoint.Y + bSecondPoint.Y)	/2};
+			acMinorPoint = {"X":(aThirdPoint.X 	+ cThirdPoint.X)	/2,	"Y":(aThirdPoint.Y 	+ cThirdPoint.Y)	/2};
+			bcMinorPoint = {"X":(bThirdPoint.X 	+ cSecondPoint.X)	/2,	"Y":(bThirdPoint.Y 	+ cSecondPoint.Y)	/2};
+
+			this.aCornerOverlayPath = "M "	+	aStartPoint.X		+	","	+	aStartPoint.Y		+ 
+																" L "	+	aSecondPoint.X 	+ "," +	aSecondPoint.Y	+ 
+																" " 	+ abMinorPoint.X 	+ ","	+	abMinorPoint.Y 	+
+																" "		+	aSecondPoint.X 	+ "," +	aSecondPoint.Y	+ 
+																" " 	+ aThirdPoint.X 	+ ","	+	aThirdPoint.Y 	+ 
+																" " 	+ acMinorPoint.X 	+ ","	+	acMinorPoint.Y 	+ 
+																" " 	+ aThirdPoint.X 	+ ","	+	aThirdPoint.Y 	+ 
+																" " 	+ aEndPoint.X 		+ "," + aEndPoint.Y;
+			
+			this.bCornerOverlayPath =	"M "	+	bStartPoint.X		+	","	+	bStartPoint.Y		+
+																" L " +	bSecondPoint.X	+	","	+	bSecondPoint.Y 	+
+																" " 	+	abMinorPoint.X	+	","	+	abMinorPoint.Y 	+ 
+																" " 	+	bSecondPoint.X	+	","	+	bSecondPoint.Y 	+  
+																" " 	+ bThirdPoint.X 	+	","	+	bThirdPoint.Y 	+
+																" " 	+ bcMinorPoint.X 	+	","	+	bcMinorPoint.Y 	+
+																" " 	+ bThirdPoint.X 	+	","	+	bThirdPoint.Y 	+
+																" "		+	bEndPoint.X			+	"," + bEndPoint.Y;
+			
+			this.cCornerOverlayPath = "M " 	+ cStartPoint.X 	+	"," +	cStartPoint.Y 	+
+																" L " +	cSecondPoint.X	+ "," +	cSecondPoint.Y 	+
+																" " 	+	bcMinorPoint.X	+ "," +	bcMinorPoint.Y 	+
+																" " 	+	cSecondPoint.X	+ "," +	cSecondPoint.Y 	+
+																" " 	+ cThirdPoint.X 	+ ","	+	cThirdPoint.Y		+
+																" " 	+ acMinorPoint.X 	+ ","	+	acMinorPoint.Y	+
+																" " 	+ cThirdPoint.X 	+ ","	+	cThirdPoint.Y		+
+																" " 	+ cEndPoint.X 		+ "," + cEndPoint.Y;
+		}
+		else
+		{
+			this.aCornerOverlayPath = "";
+			this.bCornerOverlayPath = "";
+			this.cCornerOverlayPath = "";
+		}
 	}
 
   render() {
@@ -380,13 +424,9 @@ export class TernaryGraph{
 			</linearGradient>
 		</defs>
 		<g>
-		<path d={this.aCornerOverlayPath} stroke={this.aHex} stroke-width="0.5" fill="transparent"/>
-		<path d={this.bCornerOverlayPath} stroke={this.bHex} stroke-width="0.5" fill="transparent"/>
-		<path d={this.cCornerOverlayPath} stroke={this.cHex} stroke-width="0.5" fill="transparent"/>
-		<path d={this.acOverlayPath} stroke={this.aHex} stroke-width="0.5" fill="transparent"/>
-		<path d={this.bCornerOverlayPath} stroke={this.bHex} stroke-width="0.5" fill="transparent"/>
-		<path d={this.cCornerOverlayPath} stroke={this.cHex} stroke-width="0.5" fill="transparent"/>
-		<polygon points={this.hectagonPath} class="polygon" stroke={this.hectagonHex} stroke-width="0.2" />
+			<path d={this.aCornerOverlayPath} stroke={this.aHex} stroke-width="0.5" fill="transparent"/>
+			<path d={this.bCornerOverlayPath} stroke={this.bHex} stroke-width="0.5" fill="transparent"/>
+			<path d={this.cCornerOverlayPath} stroke={this.cHex} stroke-width="0.5" fill="transparent"/>
 			<path d={this.pathData()} fill={this.bFadeURL}/>
 			<path d={this.pathData()} fill={this.aFadeURL}/>
 			<path d={this.pathData()} fill={this.cFadeURL}/>
@@ -406,16 +446,12 @@ export class TernaryGraph{
 		</g>
 		{this.plotArray.map((record) => 
 			<g>
-				<p>{record.X}</p>
-				<p>{record.Y}</p>
-				<p>{record.X2}</p>
-				<p>{record.Y2}</p>
-			<circle class="plot" cx={record.X} cy={record.Y} r={this.circleRadius} fill="black" onClick={this.recordClicked.emit(record)} ></circle>
+			<circle class="plot" cx={record.X} cy={record.Y} r={this.circleRadius} fill="black" onClick={event => this.HandleClick(record,event)} ></circle>
 			<text  class="tooltiptext" text-anchor="middle" x={record.X} y={record.Y - (this.circleRadius*1.2)} fill="black" font-size="2" font-weight="bold"> {record.Label} </text>
 				<marker id="{record.Label}" markerWidth="10" markerHeight="10" refX="0" refY="1.5" orient="auto" markerUnits="strokeWidth">
       		<path d="M 0,0 L0,3 L3,1.5 z" />
     		</marker>
-  			<path d={this.arrowPathData(record)} fill="none" stroke="black" stroke-width="0.7" marker-end="url(#{record.Label})"/>
+  			<path d={this.arrowPathData(record)} fill="none" stroke="black" stroke-width="0.7" onClick={event =>this.HandleClick(record,event)} marker-end="url(#{record.Label})"/>
   		</g>
 			)}
 		</svg>

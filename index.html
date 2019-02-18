@@ -61,6 +61,9 @@
       //});
 
       const ternarygraph2 = document.querySelector('#triangletwo ternary-graph');
+      ternarygraph2.addEventListener('recordClicked', e => {
+        alert("Record " + e.Label + " was clicked.");
+      });
       ternarygraph2.componentOnReady().then(() => {
       ternarygraph2.corners = $scope.Corners2;
       ternarygraph2.aHex = $scope.aHex;
@@ -68,12 +71,10 @@
       ternarygraph2.cHex = $scope.cHex;
       ternarygraph2.FadeEndHex = $scope.FadeEndHex;
       ternarygraph2.recordArray = $scope.recordArray;
+      ternarygraph2.showSDIOverlay = true;
       ternarygraph2.abAxisLabel = "A to B Axis";
       ternarygraph2.acAxisLabel = "A to C Axis";
       ternarygraph2.bcAxisLabel = "B to C Axis";
-      //ternarygraph2.addEventListener('recordClicked', (e) => {
-      //alert("Item '" + e.Label + "' was clicked");
-      //});
       });
     });
     </script>

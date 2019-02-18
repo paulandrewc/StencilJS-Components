@@ -47,10 +47,8 @@ export namespace Components {
     'cHex': string;
     'circleRadius': number;
     'corners': {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}};
-    'hectagonHex': string;
-    'hectagonPath': string;
     'recordArray': Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}>;
-    'showHectagon': boolean;
+    'showSDIOverlay': boolean;
   }
   interface TernaryGraphAttributes extends StencilHTMLAttributes {
     'CentralPoint'?: {"X","Y","X2"?,"Y2"?};
@@ -80,11 +78,9 @@ export namespace Components {
     'cHex'?: string;
     'circleRadius'?: number;
     'corners'?: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}};
-    'hectagonHex'?: string;
-    'hectagonPath'?: string;
     'onRecordClicked'?: (event: CustomEvent) => void;
     'recordArray'?: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}>;
-    'showHectagon'?: boolean;
+    'showSDIOverlay'?: boolean;
   }
 }
 
