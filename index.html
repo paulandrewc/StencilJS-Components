@@ -41,18 +41,14 @@
       ];
 
       const ternarygraph1 = document.querySelector('#triangleone ternary-graph');
-      ternarygraph1.addEventListener('recordClicked', e => {
-        alert("Record " + e.Label + " was clicked.");
-      });
       ternarygraph1.componentOnReady().then(() => {
+      ternarygraph1.addEventListener('recordClicked', event => {alert("Record \"" + event.detail.Label + "\" was clicked.");})
       ternarygraph1.recordArray = $scope.recordArray;
       });
 
       const ternarygraph2 = document.querySelector('#triangletwo ternary-graph');
-      ternarygraph2.addEventListener('recordClicked', e => {
-        alert("Record " + e.Label + " was clicked.");
-      });
       ternarygraph2.componentOnReady().then(() => {
+      ternarygraph2.addEventListener('recordClicked', event => {alert("Record \"" + event.detail.Label + "\" was clicked.");})
       ternarygraph2.isSDITriangle = true;
       ternarygraph2.recordArray = $scope.recordArray;
       });
