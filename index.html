@@ -37,44 +37,25 @@
 		    {"A": 5, "B": 90, "C": 5, "Label": "Super Green"},
         {"A": 0,  "B": 100,"C": 0,  "Label": "Uber Green"},
         {"A": 0,  "B": 100,"C": 0,  "Label": "Uber Green"},
-        {"A":100/3,"B":100/3,"C":100/3,"Label":"Central"}
+        {"A":33,"B":33,"C":34,"Label":"James Humphrey"},
+        {"A":40,"B":40,"C":20,"Label":"Dan French"}
       ];
-      
-      $scope.aHex = "#51caf5";
-      $scope.bHex = "#70c59d";
-      $scope.cHex = "#f48890";
-      $scope.FadeEndHex = "#ffffff";
-      $scope.showHectagon = true;
-      
 
-      $scope.Corners1 = {"A": {"X":10,"Y": 80},"B": {"X":50,"Y": 10},"C":{"X":90,"Y":80}};
-      $scope.Corners2 = {"A": {"X":10,"Y": 10},"B": {"X":50,"Y": 80},"C":{"X":90,"Y":10}};
-
-      //This will currently only apply these to the first one it finds.
-      //const ternarygraph1 = document.querySelector('#triangleone ternary-graph');
-      //ternarygraph1.componentOnReady().then(() => {
-      //ternarygraph1.recordArray = $scope.recordArray;
-      //ternarygraph1.corners = $scope.Corners1;
-      //ternarygraph1.aHex = $scope.aHex;
-      //ternarygraph1.bHex = $scope.bHex;
-      //ternarygraph1.cHex = $scope.cHex;
-      //});
+      const ternarygraph1 = document.querySelector('#triangleone ternary-graph');
+      ternarygraph1.addEventListener('recordClicked', e => {
+        alert("Record " + e.Label + " was clicked.");
+      });
+      ternarygraph1.componentOnReady().then(() => {
+      ternarygraph1.recordArray = $scope.recordArray;
+      });
 
       const ternarygraph2 = document.querySelector('#triangletwo ternary-graph');
       ternarygraph2.addEventListener('recordClicked', e => {
         alert("Record " + e.Label + " was clicked.");
       });
       ternarygraph2.componentOnReady().then(() => {
-      ternarygraph2.corners = $scope.Corners2;
-      ternarygraph2.aHex = $scope.aHex;
-      ternarygraph2.bHex = $scope.bHex;
-      ternarygraph2.cHex = $scope.cHex;
-      ternarygraph2.FadeEndHex = $scope.FadeEndHex;
+      ternarygraph2.isSDITriangle = true;
       ternarygraph2.recordArray = $scope.recordArray;
-      ternarygraph2.showSDIOverlay = true;
-      ternarygraph2.abAxisLabel = "A to B Axis";
-      ternarygraph2.acAxisLabel = "A to C Axis";
-      ternarygraph2.bcAxisLabel = "B to C Axis";
       });
     });
     </script>

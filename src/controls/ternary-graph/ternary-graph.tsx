@@ -9,10 +9,10 @@ export class TernaryGraph{
   @State()	private	plotArray: Array<{"X","Y","X2"?,"Y2"?,"Label"}> = [];
 	@Prop({ mutable: true })	public corners: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}} =  {"A":{"X":10,"Y": 80},"B": {"X":50,"Y": 10},"C": {"X":90,"Y":80}};
 	@Prop() private	circleRadius: number = 0.9;
-	@Prop() public	aHex: string = "#ffffff";
-	@Prop() public	bHex: string = "#ffffff";
-	@Prop() public	cHex: string = "#ffffff";
-	@Prop() public	FadeEndHex: string = "#ffffff";
+	@Prop({ mutable: true }) public	aHex: string = "#ffffff";
+	@Prop({ mutable: true }) public	bHex: string = "#ffffff";
+	@Prop({ mutable: true }) public	cHex: string = "#ffffff";
+	@Prop({ mutable: true }) public	FadeEndHex: string = "#ffffff";
 	@Prop({ mutable: true }) private	CentralPoint: {"X","Y","X2"?,"Y2"?} = {"X":0,"Y":0};
 
 	@Prop({ mutable: true }) private cFadeName:string = "cx" + this.corners.C.X +"cy"+ this.corners.C.Y + "rgb" + this.cHex.replace("#","");
@@ -23,7 +23,7 @@ export class TernaryGraph{
 	@Prop({ mutable: true }) private aFadeURL:string = "url(#" + this.aFadeName +")";
 
 	@Prop() public	OutlineHex: string = "#000000"
-	@Prop() public	showSDIOverlay: boolean = false;
+	@Prop() public isSDITriangle: boolean = false;
 	@Prop({ mutable: true }) private aCornerOverlayPath = "";
 	@Prop({ mutable: true }) private bCornerOverlayPath = "";
 	@Prop({ mutable: true }) private cCornerOverlayPath = "";
@@ -46,15 +46,14 @@ export class TernaryGraph{
 	@Watch('bHex')
 	@Watch('cHex')
 	@Watch('FadeEndHex')
- 	cornerAndColourPropWatcher() {
+ 	UpdateColours() {
 		this.setGradientNames();
 		this.SetDirty();
   }
 	
 	@Watch('recordArray')
-	recordArrayPropWatcher(){
-		this.updatePlotArray();
-		this.checkTotalabcPoints();
+	UpdateRecordArray(){
+		this.updatePlots();
 		this.SetDirty();
 	}
 
@@ -68,10 +67,28 @@ export class TernaryGraph{
 		this.SetDirty();
 	}
 
-	@Watch('showSDIOverlay')
-	setSDIOverlay()
+	@Watch('isSDITriangle')
+	setSDI()
 	{
-		this.sdiOverlayPaths();
+		if (this.isSDITriangle)
+		{
+		this.corners = {"A": {"X":10,"Y": 10},"B": {"X":50,"Y": 80},"C":{"X":90,"Y":10}};
+		this.aHex = "#51caf5";
+		this.bHex = "#70c59d";
+		this.cHex = "#f48890";
+		this.FadeEndHex = "#ffffff";
+		this.updateCorners();
+		this.UpdateColours();
+		}
+		else
+		{
+			this.corners = {"A":{"X":10,"Y": 80},"B": {"X":50,"Y": 10},"C": {"X":90,"Y":80}};
+			this.aHex = "#ffffff";
+			this.bHex = "#ffffff";
+			this.cHex = "#ffffff";
+			this.FadeEndHex = "#ffffff";
+		}
+		this.SetDirty();
 	}
 
 	@Watch('plotArray')
@@ -309,7 +326,7 @@ export class TernaryGraph{
 
 	private sdiOverlayPaths()
 	{
-		if(this.showSDIOverlay)
+		if(this.isSDITriangle)
 		{
 			var allPoints = this.hectagonPoints();
 			var abMinorPoint; //A Second Pointer to B Second Pointer.
