@@ -1,18 +1,21 @@
 import { Component, Prop, Watch, State,Event,EventEmitter} from '@stencil/core';
+import { TernaryPoint } from '../../Shared/types';
 
 @Component({
+	shadow:true,
   tag: 'ternary-graph',
   styleUrl: 'ternary-graph.css'
 })
 export class TernaryGraph{
-  @Prop() 	public	recordArray: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}> =[{"A":100/3,"B":100/3,"C":100/3,"Label":"Central"}];
-  @State()	private	plotArray: Array<{"X","Y","X2"?,"Y2"?,"Label"}> = [];
+  @Prop() 	public	recordArray: Array<TernaryPoint> =[{"A":100/3,"B":100/3,"C":100/3,"Label":"Central"}];
+  @State()	private	plotArray: Array<TernaryPoint> = [];
 	@Prop({ mutable: true })	public corners: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}} =  {"A":{"X":10,"Y": 80},"B": {"X":50,"Y": 10},"C": {"X":90,"Y":80}};
 	@Prop() private	circleRadius: number = 0.9;
 	@Prop({ mutable: true }) public	aHex: string = "#ffffff";
 	@Prop({ mutable: true }) public	bHex: string = "#ffffff";
 	@Prop({ mutable: true }) public	cHex: string = "#ffffff";
 	@Prop({ mutable: true }) public	FadeEndHex: string = "#ffffff";
+	@Prop({ mutable: true }) public	OutlineHex: string = "#000000"
 	@Prop({ mutable: true }) private	CentralPoint: {"X","Y","X2"?,"Y2"?} = {"X":0,"Y":0};
 
 	@Prop({ mutable: true }) private cFadeName:string = "cx" + this.corners.C.X +"cy"+ this.corners.C.Y + "rgb" + this.cHex.replace("#","");
@@ -21,8 +24,7 @@ export class TernaryGraph{
 	@Prop({ mutable: true }) private bFadeURL:string = "url(#" + this.bFadeName +")";
 	@Prop({ mutable: true }) private aFadeName:string = "ax" + this.corners.A.X +"ay"+ this.corners.A.Y + "rgb" + this.aHex.replace("#","");
 	@Prop({ mutable: true }) private aFadeURL:string = "url(#" + this.aFadeName +")";
-
-	@Prop() public	OutlineHex: string = "#000000"
+	
 	@Prop() public isSDITriangle: boolean = false;
 	@Prop({ mutable: true }) private aCornerOverlayPath = "";
 	@Prop({ mutable: true }) private bCornerOverlayPath = "";
@@ -168,7 +170,7 @@ export class TernaryGraph{
 		}
 	}
 
-	private coord(TernaryPoint: {"A","B","C","X"?,"Y"?,"Z"?,"Label"}) {
+	private coord(TernaryPoint: TernaryPoint) {
   var a = TernaryPoint.A,
     	b = TernaryPoint.B,
 			c = TernaryPoint.C,

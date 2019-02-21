@@ -8,6 +8,9 @@
 import '@stencil/core';
 
 
+import {
+  TernaryPoint,
+} from './Shared/types';
 
 
 export namespace Components {
@@ -48,7 +51,7 @@ export namespace Components {
     'circleRadius': number;
     'corners': {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}};
     'isSDITriangle': boolean;
-    'recordArray': Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}>;
+    'recordArray': Array<TernaryPoint>;
   }
   interface TernaryGraphAttributes extends StencilHTMLAttributes {
     'CentralPoint'?: {"X","Y","X2"?,"Y2"?};
@@ -80,7 +83,7 @@ export namespace Components {
     'corners'?: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}};
     'isSDITriangle'?: boolean;
     'onRecordClicked'?: (event: CustomEvent) => void;
-    'recordArray'?: Array<{"A","B","C","X"?,"Y"?,"Z"?,"Label"}>;
+    'recordArray'?: Array<TernaryPoint>;
   }
 }
 
