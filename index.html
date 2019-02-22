@@ -36,8 +36,8 @@
 		    {"A": 100,"B": 0,  "C": 0,  "Label": "Uber Blue"},
 		    {"A": 5, "B": 90, "C": 5, "Label": "Super Green"},
         {"A": 0,  "B": 100,"C": 0,  "Label": "Uber Green"},
-        {"A": 0,  "B": 100,"C": 0,  "Label": "Uber Green"},
-        {"A":100/3,"B":100/3,"C":100/3,"Label":"Central Point"}
+        {"A":100/3,"B":100/3,"C":100/3,"Label":"Central"},
+        {"A":100/3,"B":100/3,"C":100/3,"Label":"So Central"}
       ];
 
       const ternarygraph1 = document.querySelector('#triangleone ternary-graph');
@@ -50,6 +50,7 @@
       ternarygraph2.componentOnReady().then(() => {
       ternarygraph2.addEventListener('recordClicked', event => {alert("Record \"" + event.detail.Label + "\" was clicked.");})
       ternarygraph2.isSDITriangle = true;
+      ternarygraph2.mergeMatchingPoints = true;
       ternarygraph2.recordArray = $scope.recordArray;
       });
     });

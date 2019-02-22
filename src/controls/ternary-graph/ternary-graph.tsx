@@ -9,14 +9,16 @@ import { TernaryPoint } from '../../Shared/types';
 export class TernaryGraph{
   @Prop() 	public	recordArray: Array<TernaryPoint> =[{"A":100/3,"B":100/3,"C":100/3,"Label":"Central"}];
   @State()	private	plotArray: Array<TernaryPoint> = [];
-	@Prop({ mutable: true })	public corners: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}} =  {"A":{"X":10,"Y": 80},"B": {"X":50,"Y": 10},"C": {"X":90,"Y":80}};
+	@Prop({ mutable: true,reflectToAttr: true })	public corners: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}} =  {"A":{"X":10,"Y": 80},"B": {"X":50,"Y": 10},"C": {"X":90,"Y":80}};
 	@Prop() private	circleRadius: number = 0.9;
-	@Prop({ mutable: true }) public	aHex: string = "#ffffff";
-	@Prop({ mutable: true }) public	bHex: string = "#ffffff";
-	@Prop({ mutable: true }) public	cHex: string = "#ffffff";
-	@Prop({ mutable: true }) public	FadeEndHex: string = "#ffffff";
+	@Prop({ mutable: true,reflectToAttr: true }) public	aHex: string = "#ffffff";
+	@Prop({ mutable: true,reflectToAttr: true }) public	bHex: string = "#ffffff";
+	@Prop({ mutable: true,reflectToAttr: true }) public	cHex: string = "#ffffff";
+	@Prop({ mutable: true,reflectToAttr: true }) public	FadeEndHex: string = "#ffffff";
 	@Prop({ mutable: true }) public	OutlineHex: string = "#000000"
 	@Prop({ mutable: true }) private	CentralPoint: {"X","Y","X2"?,"Y2"?} = {"X":0,"Y":0};
+	@Prop() public showLabelsOnHover:boolean =false;
+	@Prop() public mergeMatchingPoints:boolean=false;
 
 	@Prop({ mutable: true }) private cFadeName:string = "cx" + this.corners.C.X +"cy"+ this.corners.C.Y + "rgb" + this.cHex.replace("#","");
 	@Prop({ mutable: true }) private cFadeURL:string = "url(#" + this.cFadeName +")";
@@ -40,7 +42,6 @@ export class TernaryGraph{
 	@Prop() public	abAxisLabel :string;
 	@Prop() public	acAxisLabel :string;
 	@Prop() public	bcAxisLabel :string;
-	@State() private isDirty: boolean;
 
   @Event() private recordClicked: EventEmitter;	
 
@@ -50,13 +51,12 @@ export class TernaryGraph{
 	@Watch('FadeEndHex')
  	UpdateColours() {
 		this.setGradientNames();
-		this.SetDirty();
   }
 	
 	@Watch('recordArray')
+	@Watch('mergeMatchingPoints')
 	UpdateRecordArray(){
 		this.updatePlots();
-		this.SetDirty();
 	}
 
 	@Watch('corners')
@@ -66,7 +66,6 @@ export class TernaryGraph{
 		this.setTextPathNames();
 		this.setCentralPoint()
 		this.sdiOverlayPaths();
-		this.SetDirty();
 	}
 
 	@Watch('isSDITriangle')
@@ -90,16 +89,6 @@ export class TernaryGraph{
 			this.cHex = "#ffffff";
 			this.FadeEndHex = "#ffffff";
 		}
-		this.SetDirty();
-	}
-
-	@Watch('plotArray')
-	@Watch('OutlineHex')
-	@Watch('aCornerOverlayPath')
-	SetDirty(){
-		this.isDirty = this.isDirty;
-		this.isDirty = false;
-		this.isDirty = true;
 	}
 
 	private updatePlots()
@@ -119,7 +108,6 @@ export class TernaryGraph{
 		this.setTextPathNames();
 		this.updatePlots();
 		this.setCentralPoint()
-		this.SetDirty();
 	}
 
 	private setGradientNames()
@@ -295,7 +283,22 @@ export class TernaryGraph{
 	
   private updatePlotArray() {
 		var plots = [];
-		plots = this.recordArray.map( record => {
+		var array: Array<TernaryPoint> = [...this.recordArray]
+
+		if(this.mergeMatchingPoints)
+		{
+			var output = this.recordArray.reduce(function(o, cur) {
+				var A = cur.A, B = cur.B, found = o.find(function(elem) {
+						return (elem.A == A && elem.B == B)
+				});
+				if (found) found.Label += ", "+ cur.Label;
+				else o.push(cur);
+				return o;
+			}, []);
+			array = [...output]
+		}
+
+		plots = array.map( record => {
 			if ((record.A + record.B + record.C) == 100)
 			{
 				var plot = this.coord(record);
@@ -304,7 +307,6 @@ export class TernaryGraph{
 			}
 		});
 		this.plotArray = plots.filter(record => record);
-		this.SetDirty();
 	}
 
 	private hectagonPoints()
@@ -466,7 +468,7 @@ export class TernaryGraph{
 		{this.plotArray.map((record) => 
 			<g>
 			<circle class="plot" cx={record.X} cy={record.Y} r={this.circleRadius} fill="black" onClick={event => this.HandleClick(record,event)} ></circle>
-			<text  class="tooltiptext" text-anchor="middle" x={record.X} y={record.Y - (this.circleRadius*1.2)} fill="black" font-size="2" font-weight="bold"> {record.Label} </text>
+			<text  class={this.showLabelsOnHover ? "tooltiptexthover":"tooltiptext"} text-anchor="middle" x={record.X} y={record.Y - (this.circleRadius*1.2)} fill="black" font-size="2" font-weight="bold"> {record.Label} </text>
 				<marker id="{record.Label}" markerWidth="10" markerHeight="10" refX="0" refY="1.5" orient="auto" markerUnits="strokeWidth">
       		<path d="M 0,0 L0,3 L3,1.5 z" />
     		</marker>

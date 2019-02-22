@@ -51,7 +51,9 @@ export namespace Components {
     'circleRadius': number;
     'corners': {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}};
     'isSDITriangle': boolean;
+    'mergeMatchingPoints': boolean;
     'recordArray': Array<TernaryPoint>;
+    'showLabelsOnHover': boolean;
   }
   interface TernaryGraphAttributes extends StencilHTMLAttributes {
     'CentralPoint'?: {"X","Y","X2"?,"Y2"?};
@@ -82,8 +84,10 @@ export namespace Components {
     'circleRadius'?: number;
     'corners'?: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}};
     'isSDITriangle'?: boolean;
+    'mergeMatchingPoints'?: boolean;
     'onRecordClicked'?: (event: CustomEvent) => void;
     'recordArray'?: Array<TernaryPoint>;
+    'showLabelsOnHover'?: boolean;
   }
 }
 
