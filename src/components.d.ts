@@ -25,6 +25,7 @@ export namespace Components {
   interface TernaryGraph {
     'CentralPoint': {"X","Y","X2"?,"Y2"?};
     'FadeEndHex': string;
+    'FillColour': string;
     'OutlineHex': string;
     'aCornerOverlayPath': string;
     'aFadeName': string;
@@ -58,6 +59,7 @@ export namespace Components {
   interface TernaryGraphAttributes extends StencilHTMLAttributes {
     'CentralPoint'?: {"X","Y","X2"?,"Y2"?};
     'FadeEndHex'?: string;
+    'FillColour'?: string;
     'OutlineHex'?: string;
     'aCornerOverlayPath'?: string;
     'aFadeName'?: string;

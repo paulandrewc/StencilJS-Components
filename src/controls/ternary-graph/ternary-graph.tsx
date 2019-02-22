@@ -15,6 +15,7 @@ export class TernaryGraph{
 	@Prop({ mutable: true,reflectToAttr: true }) public	bHex: string = "#ffffff";
 	@Prop({ mutable: true,reflectToAttr: true }) public	cHex: string = "#ffffff";
 	@Prop({ mutable: true,reflectToAttr: true }) public	FadeEndHex: string = "#ffffff";
+	@Prop({ mutable: true,reflectToAttr: true }) public	FillColour: string = "#ffffff";
 	@Prop({ mutable: true }) public	OutlineHex: string = "#000000"
 	@Prop({ mutable: true }) private	CentralPoint: {"X","Y","X2"?,"Y2"?} = {"X":0,"Y":0};
 	@Prop() public showLabelsOnHover:boolean =false;
@@ -78,6 +79,7 @@ export class TernaryGraph{
 		this.bHex = "#70c59d";
 		this.cHex = "#f48890";
 		this.FadeEndHex = "#ffffff";
+		this.FillColour = "transparent";
 		this.updateCorners();
 		this.UpdateColours();
 		}
@@ -451,7 +453,7 @@ export class TernaryGraph{
 			<path d={this.pathData()} fill={this.bFadeURL}/>
 			<path d={this.pathData()} fill={this.aFadeURL}/>
 			<path d={this.pathData()} fill={this.cFadeURL}/>
-			<polygon points={this.outlinePathData()} class="triangle" stroke={this.OutlineHex} stroke-width="0.2" />
+			<polygon points={this.outlinePathData()} class="triangle" fill={this.FillColour} stroke={this.OutlineHex} stroke-width="0.2" />
 			<path id={this.abTextPathName} d={this.abPathData()} />
 			<path id={this.bcTextPathName}  d={this.bcPathData()} />
 			<path id={this.acTextPathName}  d={this.acPathData()} />
@@ -468,11 +470,11 @@ export class TernaryGraph{
 		{this.plotArray.map((record) => 
 			<g>
 			<circle class="plot" cx={record.X} cy={record.Y} r={this.circleRadius} fill="black" onClick={event => this.HandleClick(record,event)} ></circle>
-			<text  class={this.showLabelsOnHover ? "tooltiptexthover":"tooltiptext"} text-anchor="middle" x={record.X} y={record.Y - (this.circleRadius*1.2)} fill="black" font-size="2" font-weight="bold"> {record.Label} </text>
+			<text  class={this.showLabelsOnHover ? "tooltiptexthover":"tooltiptext"} onClick={event => this.HandleClick(record,event)}  text-anchor="middle" x={record.X} y={record.Y - (this.circleRadius*1.2)} fill="black" font-size="2" font-weight="bold"> {record.Label} </text>
 				<marker id="{record.Label}" markerWidth="10" markerHeight="10" refX="0" refY="1.5" orient="auto" markerUnits="strokeWidth">
       		<path d="M 0,0 L0,3 L3,1.5 z" />
     		</marker>
-  			<path d={this.arrowPathData(record)} fill="none" stroke="black" stroke-width="0.7" onClick={event =>this.HandleClick(record,event)} marker-end="url(#{record.Label})"/>
+  			<path d={this.arrowPathData(record)} fill="none" stroke="black" stroke-width="0.7"  marker-end="url(#{record.Label})"/>
   		</g>
 			)}
 		</svg>
