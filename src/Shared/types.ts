@@ -6,6 +6,7 @@ export interface TernaryPoint {
 	Y?:number;
 	Z?:number;
 	Label?:string;
+	Records?:[string];
 }
 
 export interface Coordinate {

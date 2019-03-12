@@ -307,13 +307,24 @@ export class TernaryGraph{
 		var plots = [];
 		var array: Array<TernaryPoint> = [...this.recordArray]
 
+		array.forEach(record => {
+			record.Records = [record.Label];
+		});
+
 		if(this.mergeMatchingPoints)
 		{
 			var output = this.recordArray.reduce(function(o, cur) {
 				var A = cur.A, B = cur.B, found = o.find(function(elem) {
 						return (elem.A == A && elem.B == B)
 				});
-				if (found) found.Label += ", "+ cur.Label;
+				if (found){ 
+					found.Label += ", "+ cur.Label;
+					if(found.Records == null || found.Records == undefined)
+					{
+						found.Records = [];
+					}
+					found.Records = [...found.Records,cur.Label];
+				}
 				else o.push(cur);
 				return o;
 			}, []);
@@ -324,7 +335,7 @@ export class TernaryGraph{
 			if ((record.A + record.B + record.C) == 100)
 			{
 				var plot = this.coord(record);
-				var plotObj = {"X":plot.X,"Y":plot.Y,"X2":plot.X2,"Y2":plot.Y2,"Label":record.Label};
+				var plotObj = {"X":plot.X,"Y":plot.Y,"X2":plot.X2,"Y2":plot.Y2,"Label":record.Label,"Records":record.Records};
 				return plotObj;
 			}
 		});
