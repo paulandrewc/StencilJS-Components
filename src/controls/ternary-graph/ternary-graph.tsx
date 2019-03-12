@@ -456,7 +456,7 @@ export class TernaryGraph{
 		}
 	}
 
-	ternaryAxisPaths()
+	private ternaryAxisPaths()
 	{
 		var aAxisEndPoint = this.coord({A:0,B:50,C:50});
 		this.aAxisPath = "M " + this.corners.A.X +"," + this.corners.A.Y +" L " +aAxisEndPoint.X + "," +aAxisEndPoint.Y;
@@ -468,7 +468,7 @@ export class TernaryGraph{
 		this.cAxisPath = "M " + this.corners.C.X +"," + this.corners.C.Y +" L " +cAxisEndPoint.X + "," +cAxisEndPoint.Y;
 	}
 
-	ternaryAxisLabelPoints()
+	private ternaryAxisLabelPoints()
 	{
 		var AAxisPoints: Array<Coordinate> = [];
 		var AValue = 90;
