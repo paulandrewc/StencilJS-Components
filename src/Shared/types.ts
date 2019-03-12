@@ -7,3 +7,9 @@ export interface TernaryPoint {
 	Z?:number;
 	Label?:string;
 }
+
+export interface Coordinate {
+	X:number;
+	Y:number;
+	Label?:string;
+}

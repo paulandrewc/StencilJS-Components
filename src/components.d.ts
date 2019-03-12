@@ -9,6 +9,7 @@ import '@stencil/core';
 
 
 import {
+  Coordinate,
   TernaryPoint,
 } from './Shared/types';
 
@@ -27,6 +28,10 @@ export namespace Components {
     'FadeEndHex': string;
     'FillColour': string;
     'OutlineHex': string;
+    'aAxisHex': string;
+    'aAxisPath': string;
+    'aAxisPlotArray': Array<Coordinate>;
+    'aAxisRotation': string;
     'aCornerOverlayPath': string;
     'aFadeName': string;
     'aFadeURL': string;
@@ -38,6 +43,10 @@ export namespace Components {
     'acTextPathHref': string;
     'acTextPathName': string;
     'axisLabelFontSize': number;
+    'bAxisHex': string;
+    'bAxisPath': string;
+    'bAxisPlotArray': Array<Coordinate>;
+    'bAxisRotation': string;
     'bCornerOverlayPath': string;
     'bFadeName': string;
     'bFadeURL': string;
@@ -45,6 +54,10 @@ export namespace Components {
     'bcAxisLabel': string;
     'bcTextPathHref': string;
     'bcTextPathName': string;
+    'cAxisHex': string;
+    'cAxisPath': string;
+    'cAxisPlotArray': Array<Coordinate>;
+    'cAxisRotation': string;
     'cCornerOverlayPath': string;
     'cFadeName': string;
     'cFadeURL': string;
@@ -61,6 +74,10 @@ export namespace Components {
     'FadeEndHex'?: string;
     'FillColour'?: string;
     'OutlineHex'?: string;
+    'aAxisHex'?: string;
+    'aAxisPath'?: string;
+    'aAxisPlotArray'?: Array<Coordinate>;
+    'aAxisRotation'?: string;
     'aCornerOverlayPath'?: string;
     'aFadeName'?: string;
     'aFadeURL'?: string;
@@ -72,6 +89,10 @@ export namespace Components {
     'acTextPathHref'?: string;
     'acTextPathName'?: string;
     'axisLabelFontSize'?: number;
+    'bAxisHex'?: string;
+    'bAxisPath'?: string;
+    'bAxisPlotArray'?: Array<Coordinate>;
+    'bAxisRotation'?: string;
     'bCornerOverlayPath'?: string;
     'bFadeName'?: string;
     'bFadeURL'?: string;
@@ -79,6 +100,10 @@ export namespace Components {
     'bcAxisLabel'?: string;
     'bcTextPathHref'?: string;
     'bcTextPathName'?: string;
+    'cAxisHex'?: string;
+    'cAxisPath'?: string;
+    'cAxisPlotArray'?: Array<Coordinate>;
+    'cAxisRotation'?: string;
     'cCornerOverlayPath'?: string;
     'cFadeName'?: string;
     'cFadeURL'?: string;

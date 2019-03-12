@@ -1,5 +1,5 @@
 import { Component, Prop, Watch, State,Event,EventEmitter} from '@stencil/core';
-import { TernaryPoint } from '../../Shared/types';
+import { TernaryPoint,Coordinate } from '../../Shared/types';
 
 @Component({
 	shadow:true,
@@ -8,12 +8,15 @@ import { TernaryPoint } from '../../Shared/types';
 })
 export class TernaryGraph{
   @Prop() 	public	recordArray: Array<TernaryPoint> =[{"A":100/3,"B":100/3,"C":100/3,"Label":"Central"}];
-  @State()	private	plotArray: Array<TernaryPoint> = [];
+  @State()	private	plotArray: Array<Coordinate> = [];
 	@Prop({ mutable: true,reflectToAttr: true })	public corners: {"A":{"X","Y"}, "B":{"X","Y"},"C":{"X","Y"}} =  {"A":{"X":10,"Y": 80},"B": {"X":50,"Y": 10},"C": {"X":90,"Y":80}};
 	@Prop() private	circleRadius: number = 0.9;
 	@Prop({ mutable: true,reflectToAttr: true }) public	aHex: string = "#ffffff";
+	@Prop({ mutable: true,reflectToAttr: true }) public	aAxisHex: string = "#ffffff";
 	@Prop({ mutable: true,reflectToAttr: true }) public	bHex: string = "#ffffff";
+	@Prop({ mutable: true,reflectToAttr: true }) public	bAxisHex: string = "#ffffff";
 	@Prop({ mutable: true,reflectToAttr: true }) public	cHex: string = "#ffffff";
+	@Prop({ mutable: true,reflectToAttr: true }) public	cAxisHex: string = "#ffffff";
 	@Prop({ mutable: true,reflectToAttr: true }) public	FadeEndHex: string = "#ffffff";
 	@Prop({ mutable: true,reflectToAttr: true }) public	FillColour: string = "#ffffff";
 	@Prop({ mutable: true }) public	OutlineHex: string = "#000000"
@@ -39,6 +42,15 @@ export class TernaryGraph{
 	@Prop({ mutable: true }) private abTextPathHref:string = "#" + this.abTextPathName;
 	@Prop({ mutable: true }) private bcTextPathHref:string = "#" + this.bcTextPathName;
 	@Prop({ mutable: true }) private acTextPathHref:string = "#" + this.acTextPathName;
+	@Prop({ mutable: true }) private aAxisPlotArray: Array<Coordinate> = [];
+	@Prop({ mutable: true }) private bAxisPlotArray: Array<Coordinate> = [];
+	@Prop({ mutable: true }) private cAxisPlotArray: Array<Coordinate> = [];
+	@Prop({ mutable: true }) private aAxisRotation: string = "-60";
+	@Prop({ mutable: true }) private bAxisRotation: string = "0";
+	@Prop({ mutable: true }) private cAxisRotation: string = "60";
+	@Prop({ mutable: true }) private aAxisPath:string = "";
+	@Prop({ mutable: true }) private bAxisPath:string = "";
+	@Prop({ mutable: true }) private cAxisPath:string = "";
 	@Prop() public	axisLabelFontSize : number = 3;
 	@Prop() public	abAxisLabel :string;
 	@Prop() public	acAxisLabel :string;
@@ -67,6 +79,8 @@ export class TernaryGraph{
 		this.setTextPathNames();
 		this.setCentralPoint()
 		this.sdiOverlayPaths();
+		this.ternaryAxisPaths();
+		this.ternaryAxisLabelPoints();
 	}
 
 	@Watch('isSDITriangle')
@@ -76,10 +90,16 @@ export class TernaryGraph{
 		{
 		this.corners = {"A": {"X":10,"Y": 10},"B": {"X":50,"Y": 80},"C":{"X":90,"Y":10}};
 		this.aHex = "#51caf5";
+		this.aAxisHex = "#1E97C0"
 		this.bHex = "#70c59d";
-		this.cHex = "#f48890";
+		this.bAxisHex="#3d926a";
+		this.cHex = "#f16a73";
+		this.cAxisHex = "#BE3740";
 		this.FadeEndHex = "#ffffff";
 		this.FillColour = "transparent";
+		this.aAxisRotation = "-60";
+		this.bAxisRotation = "0";
+		this.cAxisRotation = "60"
 		this.updateCorners();
 		this.UpdateColours();
 		}
@@ -425,6 +445,71 @@ export class TernaryGraph{
 		}
 	}
 
+	ternaryAxisPaths()
+	{
+		var aAxisEndPoint = this.coord({A:0,B:50,C:50});
+		this.aAxisPath = "M " + this.corners.A.X +"," + this.corners.A.Y +" L " +aAxisEndPoint.X + "," +aAxisEndPoint.Y;
+
+		var bAxisEndPoint = this.coord({A:50,B:0,C:50});
+		this.bAxisPath = "M " + this.corners.B.X +"," + this.corners.B.Y +" L " +bAxisEndPoint.X + "," +bAxisEndPoint.Y;
+
+		var cAxisEndPoint = this.coord({A:50,B:50,C:0});
+		this.cAxisPath = "M " + this.corners.C.X +"," + this.corners.C.Y +" L " +cAxisEndPoint.X + "," +cAxisEndPoint.Y;
+	}
+
+	ternaryAxisLabelPoints()
+	{
+		var AAxisPoints: Array<Coordinate> = [];
+		var AValue = 90;
+		var BValue = 5;
+		var CValue = 5;
+		var Label = 9;
+		var i;
+		//Make A Points
+
+		for (i = 0; i < 9; i++) { 
+			var axisPoint = this.coord({A:AValue,B:BValue,C:CValue});
+			AAxisPoints.push({"X":axisPoint.X,"Y":axisPoint.Y,"Label":Label.toString()+" 0"})
+			AValue -=10;
+			BValue +=5;
+			CValue +=5;
+			Label -=1;
+		}
+		this.aAxisPlotArray = [...AAxisPoints];
+
+		var BAxisPoints: Array<Coordinate> = [];
+		AValue = 5;
+		BValue = 90;
+		CValue = 5;
+		Label = 9;
+
+		for (i = 0; i < 9; i++) { 
+			var axisPoint = this.coord({A:AValue,B:BValue,C:CValue});
+			BAxisPoints.push({"X":axisPoint.X,"Y":axisPoint.Y,"Label":Label.toString()+" 0"})
+			AValue +=5;
+			BValue -=10;
+			CValue +=5;
+			Label -=1;
+		}
+		this.bAxisPlotArray = [...BAxisPoints];
+
+		var CAxisPoints: Array<Coordinate> = [];
+		AValue = 5;
+		BValue = 5;
+		CValue = 90;
+		Label = 9;
+
+		for (i = 0; i < 9; i++) { 
+			var axisPoint = this.coord({A:AValue,B:BValue,C:CValue});
+			CAxisPoints.push({"X":axisPoint.X,"Y":axisPoint.Y,"Label":Label.toString()+" 0"})
+			AValue +=5;
+			BValue +=5;
+			CValue -=10;
+			Label -=1;
+		}
+		this.cAxisPlotArray = [...CAxisPoints];
+	}
+
   render() {
     return (
 		<div> 
@@ -447,9 +532,9 @@ export class TernaryGraph{
 			</linearGradient>
 		</defs>
 		<g>
-			<path d={this.aCornerOverlayPath} stroke={this.aHex} stroke-width="0.5" fill="transparent"/>
-			<path d={this.bCornerOverlayPath} stroke={this.bHex} stroke-width="0.5" fill="transparent"/>
-			<path d={this.cCornerOverlayPath} stroke={this.cHex} stroke-width="0.5" fill="transparent"/>
+			<path d={this.aCornerOverlayPath} stroke={this.aAxisHex} stroke-width="0.5" fill="transparent"/>
+			<path d={this.bCornerOverlayPath} stroke={this.bAxisHex} stroke-width="0.5" fill="transparent"/>
+			<path d={this.cCornerOverlayPath} stroke={this.cAxisHex} stroke-width="0.5" fill="transparent"/>
 			<path d={this.pathData()} fill={this.bFadeURL}/>
 			<path d={this.pathData()} fill={this.aFadeURL}/>
 			<path d={this.pathData()} fill={this.cFadeURL}/>
@@ -466,6 +551,20 @@ export class TernaryGraph{
 			<text font-size={this.axisLabelFontSize} fill="blue">
     	<textPath  startOffset="50%" text-anchor="middle" href={this.acTextPathHref} >{this.acAxisLabel}</textPath>
   		</text>
+		</g>
+		<g>
+		{this.aAxisPlotArray.map((axisPlot) => 
+				<text x={axisPlot.X} y={axisPlot.Y} font-size="1.5" fill={this.aAxisHex} text-anchor="middle" transform={"rotate("+this.aAxisRotation + " " + axisPlot.X +"," + axisPlot.Y +")"}>{axisPlot.Label}</text>
+				)}
+		{this.bAxisPlotArray.map((axisPlot) => 
+				<text x={axisPlot.X} y={axisPlot.Y} font-size="1.5" fill={this.bAxisHex} text-anchor="middle" transform={"rotate("+this.bAxisRotation + " " + axisPlot.X +"," + axisPlot.Y +")"}>{axisPlot.Label}</text>
+				)}
+		{this.cAxisPlotArray.map((axisPlot) => 
+				<text x={axisPlot.X} y={axisPlot.Y} font-size="1.5" fill={this.cAxisHex} text-anchor="middle" transform={"rotate("+this.cAxisRotation + " " + axisPlot.X +"," + axisPlot.Y +")"}>{axisPlot.Label}</text>
+				)}
+			<path d={this.aAxisPath} stroke-dasharray="0.5%,0.5%" stroke={this.aAxisHex} stroke-width="0.3" fill="transparent"/>
+			<path d={this.bAxisPath} stroke-dasharray="0.5%,0.5%" stroke={this.bAxisHex} stroke-width="0.3" fill="transparent"/>
+			<path d={this.cAxisPath} stroke-dasharray="0.5%,0.5%" stroke={this.cAxisHex} stroke-width="0.3" fill="transparent"/>
 		</g>
 		{this.plotArray.map((record) => 
 			<g>
