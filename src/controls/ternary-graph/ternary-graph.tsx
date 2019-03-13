@@ -148,7 +148,6 @@ export class TernaryGraph{
 	private HandleClick(record,event)
 	{
 		this.recordClicked.emit(record);
-		console.log(event);
 	}
 
 	private setTextPathNames()
